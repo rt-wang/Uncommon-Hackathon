@@ -65,6 +65,7 @@ class Player:
         if not self.run_into_obj(worm):
             return
         if "knife" in self.tool_names():
+    # press key
             worm.set_life(False)
         else:
             self._health -= 1
