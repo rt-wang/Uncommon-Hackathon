@@ -9,8 +9,8 @@ class Tilemap:
         self.colkey = colkey
         self.scroll_x = 0
         self.scroll_y = 0
-        self.scroll_border_x = 3
-        self.scroll_border_y = 3
+        self.scroll_border_x = size * .75
+        self.scroll_border_y = size * .75
 
     def get(self, tm, x, y):
         return tilemap(tm).pget(self.x * self.size + x, self.y * self.size + y)
@@ -24,10 +24,10 @@ class Tilemap:
 
     def scroll(self, player_x):
         player_x += 1
-        if player_x < self.scroll_x: # if the x value is 
-            player_x = self.scroll_x
+        if player_x < self.scroll_x: # if the x value is less than scroll_x
+            player_x = self.scroll_x 
         elif player_x > self.scroll_x + self.scroll_border_x: # if x value is past a certain point
-            self.scroll_x = player_x - self.scroll_border_x # scrollx = x
+            self.scroll_x = player_x - self.scroll_border_x # scroll_x = x - the border value 
         return player_x
 
 

@@ -8,7 +8,7 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 
-player = Player()
+player = Player(0, 0)
 player_x = 1
 player_y = 1
 
