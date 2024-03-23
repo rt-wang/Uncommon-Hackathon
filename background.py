@@ -62,7 +62,7 @@ class Tilemap:
         return player_x
 '''
 
-def sprite(x, y, n, m=0, size=8, colkey=0):
+def sprite(x, y, n, m=0, size=8, colkey=3):
     blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
 
 def mouse_tile_pos(tile_size=8, screen_size=64):
