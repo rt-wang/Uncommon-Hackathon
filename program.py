@@ -25,19 +25,19 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
 
-knife = Safe("knife", 25, 24, "ehewif") # 25 24 27 26 (top left, lower right)
-suit = Safe("suit", 25, 4, "awhef") # 25 4 27 5
-letter = Safe("letter", 9, 26, "awejfio") # 9 26 11 28
-key = Safe("key", 27, 26, "whaeh")
-rations = Safe("rations", 27, 5, "rations")
-backpack = Safe("backpack", 11, 28, "waejf")
+knife = Safe("knife", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+suit = Safe("suit", 25, 9, "awhef") # 25 4 27 5
+letter = Safe("letter", 4, 25, "awejfio") # 9 26 11 28
+key = Safe("key", 4, 25, "whaeh")
+rations = Safe("rations", 28, 28, "rations")
+backpack = Safe("backpack", 28, 28, "waejf")
 
 safes = [knife, suit, letter, key, rations, backpack]
 # code for opening safe, only uncomment after object.py is done
 
 def openSafe(safes, player_x, player_y):
     
-    text(10, 10, f"ur coords: {player_x}, {player_y}", 7)
+    text(30, 30, f"ur coords: {player_x}, {player_y}", 7)
     for safe in safes: # dont for each position in the safe positions
         text(20, 20, f"safe coords: {safe._x}, {safe._y}", 2)
         if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision

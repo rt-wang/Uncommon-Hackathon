@@ -19,14 +19,9 @@ class Tilemap:
 
     def set(self, tm, x, y, data):
         return tilemap(tm).pset(self.x * self.size + x, self.y * self.size + y, data)
-<<<<<<< HEAD
-
-    def draw(self, tm, colkey=0):
-        camera(self.scroll_x, 0)
-=======
+    
     def draw(self, tm, colkey=3):
         camera(self.scroll_x*8, self.scroll_y*8)
->>>>>>> e1f022c5e368fd2cf16d2c07465a2c28a26d5ffb
         bltm(0, 0, tm, self.x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
 
     def x_scroll(self, player_x, player_x_speed):
