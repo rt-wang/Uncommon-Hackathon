@@ -52,7 +52,7 @@ while True:
         move = True
     
 
-    tm.draw(0)
+    tm.draw(1)
     if move == True:
         draw_sprite(player_x,player_y, 2)
     draw_sprite(player_x,player_y, 1)
