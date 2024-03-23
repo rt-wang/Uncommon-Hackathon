@@ -13,14 +13,14 @@ class Tilemap:
     def get(self, tm, x, y):
         return tilemap(tm).pget(self.x * self.size + x, self.y * self.size + y)
 
-    def set(self, tm, x, y, rollx, rolly, data):
-        return tilemap(tm).pset(self.x * self.size + self.rollx, self.y * self.size + rolly,
+    def set(self, tm, x, y, data):
+        return tilemap(tm).pset(self.x * self.size + x, self.y * self.size + y,
                                data)
-
-    def draw(self, tm, colkey=0):
+    def draw(self, tm, x, colkey=0):
+        camera(x, 0)
         bltm(0, 0, tm, self.x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
 
-def sprite(x, y, n, m=0, size=8, colkey=0):
+def sprite(x, y, n, m=0, size=16, colkey=0):
     blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
 
 

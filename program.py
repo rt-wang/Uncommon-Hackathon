@@ -6,6 +6,11 @@ load('my_resource.pyxres')
 tm = Tilemap()
 x = 1
 y = 1
+scrollx = 0
+scrolly = 0
+scrollBorderX = 3
+scrollBorderY = 3
+
 while True:
     px = x
     py = y
@@ -13,6 +18,10 @@ while True:
     cls(0)
     if btn(KEY_RIGHT):
         x += 1
+        if x < scrollx: # if the x value is 
+            x = scrollx
+        elif x > scrollx + scrollBorderX: # if x value is past a certain point
+            scrollx = x - scrollBorderX # scrollx = x 
     elif btn(KEY_LEFT):
         x -= 1
     elif btn(KEY_UP):
@@ -28,5 +37,5 @@ while True:
     tm.x = x//8
     tm.y = y//8
     sprite(x%8, y%8, 1, 0)
-    tm.draw(0)
+    tm.draw(0, scrollx)
     flip()
