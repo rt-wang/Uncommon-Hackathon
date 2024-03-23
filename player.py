@@ -50,12 +50,12 @@ class Player:
 
 
     # Return the list of tool names
-    def tool_names(self) -> List:
+    def tool_names(self) -> list:
         lst = [tool.name for tool in self._tools]
         return lst
 
     # Encounter an object
-    def run_into_obj(obj):
+    def run_into_obj(self, obj):
         if self._x == obj._x and self._y == obj._y:
             return True
         return False
