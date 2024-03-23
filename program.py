@@ -56,6 +56,7 @@ def openSafe(safes, player_x, player_y):
                 
     return True
 
+
 while True:
     move = False
     px = player_x
