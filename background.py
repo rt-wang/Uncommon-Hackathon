@@ -19,7 +19,6 @@ class Tilemap:
 
     def set(self, tm, x, y, data):
         return tilemap(tm).pset(self.x * self.size + x, self.y * self.size + y, data)
-
     def draw(self, tm, colkey=3):
         camera(self.scroll_x*8, self.scroll_y*8)
         bltm(0, 0, tm, self.x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
@@ -43,6 +42,24 @@ class Tilemap:
             self.scroll_y += player_y_speed
             return player_y
         return player_y
+
+
+'''   def right_scroll(self, player_x):
+        player_x += 1
+        if player_x < self.scroll_x: # if the x value is less than scroll_x
+            player_x = self.scroll_x
+        elif player_x > self.scroll_x + self.scroll_border_rightx: # if x value is past a certain point
+            self.scroll_x = min(player_x - self.scroll_border_rightx, 240 * 8)  # scroll_x = x - the border value 
+        return player_x
+    
+    def left_scroll(self, player_x):
+        player_x -= 1
+        if player_x > self.scroll_x: 
+            player_x = self.scroll_x
+        elif player_x < self.scroll_border_leftx: 
+            self.scroll_x = max(player_x + self.scroll_border_leftx, 0)  
+        return player_x
+'''
 
 def sprite(x, y, n, m=0, size=8, colkey=0):
     blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
