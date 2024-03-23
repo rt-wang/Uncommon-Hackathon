@@ -1,3 +1,6 @@
+from typing import Any
+from object import Equipment
+
 class Player:
     # The player class
 
@@ -7,7 +10,7 @@ class Player:
         self._health = 5
         self._oxygen = 5
         self._food = 0
-        self._equipment = Equipment()
+        self._equipment = Equipment() # Contain knife, backpack, and oxygen_tank
         
 
     def move_change_loc(self, x_change, y_change):
@@ -15,6 +18,17 @@ class Player:
         self._x += x_change
         self._y += y_change
 
-    def has_oxygen_tank(self, oxygen_tank):
-        if oxygen_tank:
-            self._oxygen = 5
+
+    def pickup_tool(self, tool):
+        """
+        Pick up a tool and update it in the character. If the player has a 
+        backpack, tools can be picked up. 
+        Otherwise, no action unless the tool is a knife.
+
+        tool[str]: name of the tool
+        """
+        if self._equipment._backpack:
+            if tool == "knife":
+                self._equipment._knife = True
+        elif self._equipment._backpack and tool == "knife":
+            self._equipment._knife = True
