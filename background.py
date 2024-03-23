@@ -19,9 +19,10 @@ class Tilemap:
 
     def set(self, tm, x, y, data):
         return tilemap(tm).pset(self.x * self.size + x, self.y * self.size + y, data)
+
     def draw(self, tm, colkey=0):
-        camera(self.scroll_x, 0)
-        bltm(0, 0, tm, self.x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
+        camera(self.x, 0)
+        bltm(0, 0, tm, self.scroll_x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
 
     def right_scroll(self, player_x):
         player_x += 1
