@@ -14,7 +14,7 @@ class Player:
         self._health = health
         self._oxygen = oxygen
         self._food = food
-        self._equipment = Equipment() # Contain knife, backpack, and oxygen_tank
+        self._tools = []
         
 
     # Update the player location by specifying the change of (x, y)
@@ -23,25 +23,21 @@ class Player:
         self._y += y_change
 
 
-    def pickup_tool(self, tool) -> None:
+    def set_tool(self, tool) -> None:
         """
         Pick up a tool and update it in the character. If the player has a 
         backpack, tools can be picked up. 
         Otherwise, no action unless the tool is a knife.
 
-        tool[str]: name of the tool, one of these: "knife, backpack, oxygen_tank"
+        tool[Equipment]
         """
-        assert tool == "knife" or tool == "backpack" or tool == "oxygen_tank"
+        assert isinstance(tool, Equipment)
 
-        if self._equipment._backpack:
-            if tool == "knife":
-                self._equipment._knife = True
-            elif tool == "backpack":
-                self._equipment._backpack = True
-            else:
-                self._equipment._oxygen_tank = True
-        elif self._equipment._backpack and tool == "knife":
-            self._equipment._knife = True
+        for each in self._tools:
+            if each.name == "backpack":
+                self.tools.append(tool)
+        if self.tool.name == "knife":
+            self._tools.append(tool)
 
     
     # Check if the player is alive. If so, return True, and False otherwise.
