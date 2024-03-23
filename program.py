@@ -1,5 +1,5 @@
 from pyxel import *
-from pyxlib import *
+from background import *
 init(64, 64, fps=3)
 load('my_resource.pyxres')
 
