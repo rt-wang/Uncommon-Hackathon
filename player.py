@@ -1,5 +1,6 @@
 class Player:
-
+    # The player class
+    
     def __init__(self) -> None:
         _health = 5
         _oxygen = 5
