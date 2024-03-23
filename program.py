@@ -30,5 +30,3 @@ while True:
     sprite(x%8, y%8, 1, 0)
     tm.draw(0)
     flip()
-
-#sdfsd
