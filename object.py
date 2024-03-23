@@ -1,4 +1,5 @@
 from pyxel import *
+import math, random
 
 class Equipment:
 
@@ -8,14 +9,32 @@ class Equipment:
         self._y = y
 
 class Worm:
-    def __init__(self, x, y) -> None:
+    def __init__(self, x, y, life = True) -> None:
         self._x = x
         self._y = y
+        self._life = life
 
     
     def move_change_loc(self, x_change, y_change):
         self._x += x_change
         self._y += y_change
+
+    def close_to_player(self, player) -> bool:
+        if math.sqrt((self._x - player._x) ** 2 + (self._y - player._y) ** 2) < 6:
+            return True
+        return False
+    
+
+    def move(self):
+        # Generate a pair of random number (a, b) where a, b \in {0, 1}.
+        # For a: 0 - horizontal walk; 1 - vertical walk
+        # For b: 0 - -1 step; 1: 1 step
+        a, b = (random.randint(0, 1), random.randint(0, 1))
+        if a == 0:
+            self.move_change_loc(b)
+        else:
+            self.move_change_loc(b)
+
 
 class Safe: 
     def __init__(self, name, x, y, text) -> None:
@@ -31,3 +50,7 @@ class Safe:
             return True
         else:
             return False
+    def set_life(self, is_alive):
+        self._life = is_alive
+
+    

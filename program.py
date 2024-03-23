@@ -32,6 +32,7 @@ backpack = Safe("backpack", 11, 28, "waejf")
 
 safes = [knife, suit, letter, key, rations, backpack]
 # code for opening safe, only uncomment after object.py is done
+
 def openSafe(safes, player_x, player_y):
     
     text(10, 10, f"ur coords: {player_x}, {player_y}", 7)
