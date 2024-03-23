@@ -22,16 +22,6 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
 
-from background import Tilemap
-init(64, 64, fps=3)
-
-load('astronaut.pyxres')
-
-tm = Tilemap()
-
-player = Player()
-player_x = 1
-player_y = 1
 while True:
     move = False
     px = player_x
@@ -54,7 +44,6 @@ while True:
         player_y += 1
         move = True
     
-
     if tm.get(0, player_x%8, player_y%8) == (0, 1) and (player_x//8, player_y//8) == pl:
         player_x = px
         player_y = py 
@@ -63,6 +52,7 @@ while True:
         player_y = 1
     tm.x = player_x//8
     tm.y = player_y//8
+
     if move == True:
         draw_sprite(player_x,player_y, 2)
     draw_sprite(player_x,player_y, 1)
