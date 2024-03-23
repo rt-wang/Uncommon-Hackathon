@@ -1,10 +1,9 @@
 class Equipment:
 
-    def __init__(self, oxygen_tank, knife, backpack) -> None:
-        # Boolean var
-        self._oxygen_tank = oxygen_tank
-        self._knife = knife
-        self._backpack = backpack
+    def __init__(self, name, x, y) -> None:
+        self._name = name # string specify the name of the tool
+        self._x = x
+        self._y = y
 
 
 class Worm:
