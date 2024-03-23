@@ -22,6 +22,14 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
 
+def openSafe(safe, player_x):
+    for pos in safe_pos:
+        if player_x == safe.x and player_y == safe.y:
+            set_tool(safe.object)
+            return True
+        else:
+            return False
+
 while True:
     move = False
     px = player_x
