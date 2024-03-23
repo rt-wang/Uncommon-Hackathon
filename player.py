@@ -1,9 +1,9 @@
 from typing import Any
-from object import Equipment
+from object import Equipment, Worm
 
 class Player:
 
-    def __init__(self, x, y, health, oxygen, food) -> None:
+    def __init__(self, x, y, health = 3, oxygen = True, food = True) -> None:
         """
         health[int]: 0 is death, and higher value coresponds to more health.
         oxygen[int]
@@ -36,8 +36,9 @@ class Player:
         for each in self._tools:
             if each.name == "backpack":
                 self.tools.append(tool)
-        if self.tool.name == "knife":
-            self._tools.append(tool)
+            else:
+                if tool.name == "knife":
+                    self._tools.append(tool)
 
     
     # Check if the player is alive. If so, return True, and False otherwise.
@@ -46,3 +47,25 @@ class Player:
             return True
         else:
             return False
+
+
+    # Return the list of tool names
+    def tool_names(self) -> list:
+        lst = [tool.name for tool in self._tools]
+        return lst
+
+    # Encounter an object
+    def run_into_obj(self, obj):
+        if self._x == obj._x and self._y == obj._y:
+            return True
+        return False
+
+    # Encounter a worm
+    def encounter_worm(self, worm):
+        if not self.run_into_obj(worm):
+            return
+        if "knife" in self.tool_names():
+    # press key
+            worm.set_life(False)
+        else:
+            self._health -= 1
