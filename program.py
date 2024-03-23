@@ -2,7 +2,7 @@ from pyxel import *
 from background import *
 from player import Player
 from background import Tilemap, sprite
-init(256, 256, fps=6)
+init(256, 256, fps=15)
 load('astronaut.pyxres')
 
 tm = Tilemap()
@@ -34,7 +34,7 @@ while True:
     move = False
     px = player_x
     py = player_y
-    pl = (player_x//8, player_y//8)
+    #pl = (player_x//8, player_y//8)
     cls(0)
 
     # player movement
@@ -53,7 +53,7 @@ while True:
     
 
     tm.draw(1)
-    if move == True:
+    if move:
         draw_sprite(player_x,player_y, 2)
     draw_sprite(player_x,player_y, 1)
     flip()
