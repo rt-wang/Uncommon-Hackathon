@@ -81,7 +81,8 @@ while True:
     tm.draw(0)
     if move:
         draw_sprite(player_x,player_y, 2)
-    draw_sprite(player_x,player_y, 1)
+    else:
+        draw_sprite(player_x,player_y, 1)
     openSafe(safes, player_x, player_y)
     flip()
 
