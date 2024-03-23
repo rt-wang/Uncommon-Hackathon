@@ -2,7 +2,7 @@ from pyxel import *
 from background import *
 from player import Player
 from background import Tilemap, sprite
-init(128, 128, fps=10)
+init(256, 256, fps=6)
 load('astronaut.pyxres')
 
 tm = Tilemap()
@@ -22,16 +22,6 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
 
-from background import Tilemap
-init(64, 64, fps=3)
-
-load('astronaut.pyxres')
-
-tm = Tilemap()
-
-player = Player(0, 0)
-player_x = 1
-player_y = 1
 while True:
     move = False
     px = player_x
@@ -41,12 +31,11 @@ while True:
 
     # player movement
     if btn(KEY_RIGHT):
-        player_x += 1
         move = True
-        player_x = tm.scroll(player_x)
+        player_x = tm.right_scroll(player_x)
     elif btn(KEY_LEFT):
-        player_x -= 1
         move = True
+        player_x = tm.left_scroll(player_x)
     elif btn(KEY_UP):
         player_y -= 1
         move = True
@@ -54,7 +43,6 @@ while True:
         player_y += 1
         move = True
     
-
     if tm.get(0, player_x%8, player_y%8) == (0, 1) and (player_x//8, player_y//8) == pl:
         player_x = px
         player_y = py 
@@ -63,6 +51,7 @@ while True:
         player_y = 1
     tm.x = player_x//8
     tm.y = player_y//8
+
     if move == True:
         draw_sprite(player_x,player_y, 2)
     draw_sprite(player_x,player_y, 1)

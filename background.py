@@ -1,6 +1,6 @@
 from pyxel import *
 class Tilemap:
-    def __init__(self, relative=True, size=8, colkey=0):
+    def __init__(self, relative=True, size=16, colkey=0):
         self.x = 0
         self.y = 0
         self.relative = relative
@@ -9,8 +9,10 @@ class Tilemap:
         self.colkey = colkey
         self.scroll_x = 0
         self.scroll_y = 0
-        self.scroll_border_x = size * .75
-        self.scroll_border_y = size * .75
+        self.scroll_border_rightx = size * .75
+        self.scroll_border_leftx = size * .25
+        self.scroll_border_upy = size * .75
+        self.scroll_border_downy = size * .25
 
     def get(self, tm, x, y):
         return tilemap(tm).pget(self.x * self.size + x, self.y * self.size + y)
@@ -22,14 +24,21 @@ class Tilemap:
         camera(self.scroll_x, 0)
         bltm(0, 0, tm, self.x * self.ss, self.y * self.ss, self.ss, self.ss, self.colkey)
 
-    def scroll(self, player_x):
+    def right_scroll(self, player_x):
         player_x += 1
         if player_x < self.scroll_x: # if the x value is less than scroll_x
-            player_x = self.scroll_x 
-        elif player_x > self.scroll_x + self.scroll_border_x: # if x value is past a certain point
-            self.scroll_x = player_x - self.scroll_border_x # scroll_x = x - the border value 
+            player_x = self.scroll_x
+        elif player_x > self.scroll_x + self.scroll_border_rightx: # if x value is past a certain point
+            self.scroll_x = min(player_x - self.scroll_border_rightx, 240 * 8)  # scroll_x = x - the border value 
         return player_x
-
+    
+    def left_scroll(self, player_x):
+        player_x -= 1
+        if player_x > self.scroll_x: 
+            player_x = self.scroll_x
+        elif player_x < self.scroll_border_leftx: 
+            self.scroll_x = max(player_x + self.scroll_border_leftx, 0)  
+        return player_x
 
 def sprite(x, y, n, m=0, size=8, colkey=0):
     blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
