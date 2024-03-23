@@ -23,9 +23,9 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y+1, 3,1)
 
 # code for opening safe, only uncomment after object.py is done
-def openSafe(safe, player._x):
+def openSafe(safe, player):
     for pos in safe_pos: # dont for each position in the safe positions
-        if player._x == safe._x and player_y == safe._y: # check for collision
+        if player.run_into_obj(): # check for collision
 # NEED UPDATE            player.set_tool(safe._tool) # sets the tool that has been picked up from safe
 # NEED UPDATE            text(safe.x, safe.y, safe.text, 7) # displays text where the safe is opened
             return True
