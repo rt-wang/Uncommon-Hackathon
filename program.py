@@ -60,7 +60,7 @@ print_str = ""
 dialogue = 0
 
 def render_text(str):
-    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 237 + tm.scroll_x, 10, 0)
+    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 180 + tm.scroll_x, 10, 0)
     text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, str, 7)
 
 def displayUI(scroll_x, scroll_y, size, health, oxygen):
@@ -196,11 +196,34 @@ while True:
             draw_sprite(player_x,player_y, 1)
             
     if safe_collision == True:
-        safes[safe_num].open_safe(dialogue)
+        if dialogue == 0:
+            print_str = "Would you like to open the safe? Y/N"
+        if btnp(KEY_Y):
+            if dialogue <= 1:
+                print_str = "Not so quick. (Press K)"
+                dialogue = 1
+            if dialogue == 6:
+                print_str = "Correct. As Baby Ben is a baby, he does lie down."
+        if btnp(KEY_K):
+            if dialogue <= 2:
+                print_str = "A good astronaut remembers details..."
+                dialogue = 3
+            elif dialogue <= 3:
+                print_str = "Baby Ben lies."
+                dialogue = 4
+            elif dialogue <= 4:
+                print_str = "Baby Ben does not lie."
+                dialogue = 5
+            elif dialogue <= 5:
+                print_str = "Does Baby Ben lie? Y/N"
+                dialogue = 6
+        if btnp(KEY_N):
+            if dialogue == 6:
+                print_str = "Incorrect. One item has been lost. Permanently."
     else:
         print_str = ""
-
-    render_text(print_str)           
+    if print_str != "":
+        render_text(print_str)           
             
     worm.chase(player)
     if worm._life:

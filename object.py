@@ -65,33 +65,7 @@ class Safe:
         self._name = name
         self._x = x
         self._y = y
-        self._text = text
-
-    def open_safe(self, dialogue) -> bool:
-        if dialogue == 0:
-            print_str = "Would you like to open the safe? Y/N"
-        if btnp(KEY_Y):
-            if dialogue <= 1:
-                print_str = "Not so quick. (Press K)"
-                dialogue = 1
-            if dialogue == 6:
-                print_str = "Correct. As Baby Ben is a baby, he does lie down."
-        if btnp(KEY_K):
-            if dialogue <= 2:
-                print_str = "A good astronaut remembers details..."
-                dialogue = 3
-            elif dialogue <= 3:
-                print_str = "Baby Ben lies."
-                dialogue = 4
-            elif dialogue <= 4:
-                print_str = "Baby Ben does not lie."
-                dialogue = 5
-            elif dialogue <= 5:
-                print_str = "Does Baby Ben lie? Y/N"
-                dialogue = 6
-        if btnp(KEY_N):
-            if dialogue == 6:
-                print_str = "Incorrect. One item has been lost. Permanently."
+        self._text = text        
             
             
     def set_life(self, is_alive):
