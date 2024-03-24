@@ -290,6 +290,7 @@ while True:
             for x,y in safeHouses:
                 if x - 1 <= worm._x <= x + 2 and y - 1 <= worm._y <= y + 2:
                     encountered_worm.remove(worm)
+                    worm_lst.remove(worm)
             #if (worm._x, worm._y) in safeHouses:
                 
             

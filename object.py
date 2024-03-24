@@ -16,7 +16,7 @@ class Worm:
         self._y = random.randint(0, 256)
         self._life = life
         self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
-        self.safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
+        self.safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51), (26, 35)]
     
     #def move_change_loc(self, x_change, y_change):
        # self._x += x_change
