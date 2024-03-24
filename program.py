@@ -9,6 +9,8 @@ init(256, 256, fps=6)
 load('astronaut.pyxres')
 
 tm = Tilemap()
+curMap = 0
+
 player = Player(1,1)
 player._tools.append("knife") # temp
 player_x = 1
@@ -98,7 +100,7 @@ while True:
     safe_collision = False
     #pl = (player_x//8, player_y//8)
     cls(0)
-    tm.draw(0)
+    tm.draw(curMap)
     
     prev_player_x = player_x
     prev_player_y = player_y
