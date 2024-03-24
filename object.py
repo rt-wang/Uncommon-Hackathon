@@ -11,9 +11,9 @@ class Equipment:
         self.v = v
 
 class Worm:
-    def __init__(self, x = random.randint(0, 256), y = random.randint(0, 256), life = True) -> None:
-        self._x = x
-        self._y = y
+    def __init__(self, x = 0, y = 0, life = True) -> None:
+        self._x = random.randint(0, 256)
+        self._y = random.randint(0, 256)
         self._life = life
         self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
 
@@ -37,12 +37,12 @@ class Worm:
             if b == 0:
                 self.move_change_loc(0, 3)
             else:
-                self.move_change_loc(0, 3)
+                self.move_change_loc(0, -3)
         else:
             if b == 0:
                 self.move_change_loc(3, 0)
             else:
-                self.move_change_loc(3, 0)
+                self.move_change_loc(-3, 0)
     
     def draw(self):
         blt(self._x, self._y, 1, 0, 8, 16, 8, 3)
@@ -50,6 +50,7 @@ class Worm:
     
     def chase(self, player):
         if self.close_to_player(player):
+            self._chase = True
             if self._x > player._x:
                 self._x -= 1
             elif self._x < player._x:

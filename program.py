@@ -88,6 +88,7 @@ worm_lst = []
 for i in range(100):
     worm = Worm()
     worm_lst.append(worm)
+worm_frame = 0
 
 
 while True:
@@ -187,13 +188,13 @@ while True:
 
     # Worm movement
     for worm in worm_lst:
-        if not worm._chase:
+        if not worm._chase and worm_frame % 5 == 0:
             worm.move()
         else:
             worm.chase(player)
         if worm._life:
             worm.draw()
-            draw_sprite(player_x,player_y, 1)
+    worm_frame += 1
             
     if safe_collision == True:
         if dialogue == 0:
@@ -225,15 +226,6 @@ while True:
         print_str = ""
 
     render_text(print_str)           
-<<<<<<< HEAD
-            
-    worm.chase(player)
-    if worm._life:
-        blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
-        
-=======
-
->>>>>>> 087d526c9b088abda66ebf420e37af3235943f3f
     flip()
     
 # Plan for the safe
