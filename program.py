@@ -20,6 +20,7 @@ scroll_x = 0
 scroll_y = 0
 
 face_left = False
+door = False
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
@@ -107,7 +108,11 @@ while True:
     safe_num = 0
     #pl = (player_x//8, player_y//8)
     cls(0)
-    tm.draw(curMap)
+    if not door:
+        tm.draw(curMap)
+    else:
+        curMap = 1
+        tm.draw(curMap)
     
     prev_player_x = player_x
     prev_player_y = player_y
@@ -158,6 +163,9 @@ while True:
     
     if (player_x == 28 or player_x == 29) and (player_y == 13 or player_y == 14 or player_y == 16 or player_y == 17):
         collision = True
+
+    if player_x == 31 and (player_y == 15 or player_y == 16):
+        door = True
 
     if collision == True:
         player_x = prev_player_x
