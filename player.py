@@ -52,7 +52,7 @@ class Player:
 
     # Return the list of tool names
     def tool_names(self) -> list:
-        lst = [tool.name for tool in self._tools]
+        lst = [tool._name for tool in self._tools]
         return lst
 
     # Encounter an object
