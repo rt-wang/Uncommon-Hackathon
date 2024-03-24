@@ -56,6 +56,21 @@ def openSafe(safes, player_x, player_y):
                 
     return True
 
+def displayUI(scroll_x, scroll_y, size, health, oxygen):
+    # backdrop
+    # for i in range(0, 7):
+    #     for j in range(0, 4):
+    #         blt((scroll_x + 31-i)*size, (scroll_y + j)*size, 0, 8, 24, 8, 8)
+
+    # health
+    for i in range(0, health):
+        blt((scroll_x + 30-i)*size, (scroll_y + 1) *size, 0, 8, 32, 8, 8)
+    
+    #oxygen
+    for i in range(0, oxygen):
+        blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8)
+
+
 
 while True:
     move = False
@@ -85,5 +100,6 @@ while True:
     else:
         draw_sprite(player_x,player_y, 1)
     openSafe(safes, player_x, player_y)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, 3, 5)
     flip()
 
