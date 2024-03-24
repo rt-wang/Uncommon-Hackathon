@@ -45,22 +45,9 @@ class Tilemap:
         return player_y
 
 
-'''   def right_scroll(self, player_x):
-        player_x += 1
-        if player_x < self.scroll_x: # if the x value is less than scroll_x
-            player_x = self.scroll_x
-        elif player_x > self.scroll_x + self.scroll_border_rightx: # if x value is past a certain point
-            self.scroll_x = min(player_x - self.scroll_border_rightx, 240 * 8)  # scroll_x = x - the border value 
-        return player_x
-    
-    def left_scroll(self, player_x):
-        player_x -= 1
-        if player_x > self.scroll_x: 
-            player_x = self.scroll_x
-        elif player_x < self.scroll_border_leftx: 
-            self.scroll_x = max(player_x + self.scroll_border_leftx, 0)  
-        return player_x
-'''
+def sprite(x, y, n, m=0, size=8, colkey=0):
+    blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
+
 
 def sprite(x, y, n, m, size=8, colkey=3, flip = False):
     if not flip:
