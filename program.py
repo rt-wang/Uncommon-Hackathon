@@ -6,7 +6,7 @@ from object import Equipment
 from background import Tilemap, sprite
 from object import Worm
 
-init(256, 256, fps=15)
+init(256, 256, fps=15, title="The Red Planet")
 load('astronaut.pyxres')
 
 
@@ -283,6 +283,8 @@ while True:
                 else:
                     if not safe:
                         player._health += health
+            if (worm._x and worm._y) in safeHouses:
+                encountered_worm.remove(worm)
             
 
         # Lose oxygen every 5 seconds while on Mars
