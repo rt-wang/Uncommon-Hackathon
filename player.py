@@ -38,7 +38,7 @@ class Player:
             if each.name == "backpack":
                 self.tools.append(tool)
             else:
-                if tool.name == "knife":
+                if tool._name == "knife":
                     self._tools.append(tool)
 
     

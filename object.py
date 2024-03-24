@@ -65,10 +65,9 @@ class Safe:
         self._name = name
         self._x = x
         self._y = y
-        self._text = text
-
-    # def open_safe(self) -> bool:
-       
+        self._text = text        
+            
+            
     def set_life(self, is_alive):
         self._life = is_alive
 

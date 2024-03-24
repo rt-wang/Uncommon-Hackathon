@@ -60,7 +60,7 @@ print_str = ""
 dialogue = 0
 
 def render_text(str):
-    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 237 + tm.scroll_x, 10, 0)
+    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 180 + tm.scroll_x, 10, 0)
     text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, str, 7)
 
 def displayUI(scroll_x, scroll_y, size, health, oxygen):
@@ -216,11 +216,15 @@ while True:
         if btnp(KEY_N):
             if dialogue == 6:
                 print_str = "Incorrect. One item has been lost. Permanently."
-              
     else:
         print_str = ""
+        
+    if print_str != "":
+        render_text(print_str)           
 
-    render_text(print_str)           
+    worm.chase(player)
+    if worm._life:
+        blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
 
     flip()
     
