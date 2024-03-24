@@ -167,9 +167,10 @@ while True:
 
     if "knife" in player.tool_names():
         if not attack:
-            draw_sprite(player_x,player_y,3)
             if move:
                 draw_sprite(player_x,player_y,4)
+            else:
+                draw_sprite(player_x,player_y,3)
         else:
             draw_sprite(player_x,player_y,5)
     else:
@@ -178,10 +179,6 @@ while True:
         else:
             draw_sprite(player_x,player_y, 1)
 
-    if move:
-        draw_sprite(player_x,player_y, 2)
-    else:
-        draw_sprite(player_x,player_y, 1)
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
 
 
@@ -193,7 +190,6 @@ while True:
             worm.chase(player)
         if worm._life:
             worm.draw()
-            draw_sprite(player_x,player_y, 1)
             
     if safe_collision == True:
         if dialogue == 0:
