@@ -43,6 +43,9 @@ class Worm:
                 self.move_change_loc(3, 0)
             else:
                 self.move_change_loc(3, 0)
+    
+    def draw(self):
+        blt(self._x, self._y, 1, 0, 8, 16, 8, 3)
 
     
     def chase(self, player):
