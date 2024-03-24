@@ -175,9 +175,10 @@ while True:
             player_y = prev_player_y
             move = False
         
+        # Safehouse encounter collision
         for x, y in safeHouses:
             if player_x == x and player_y == y:
-                if timeOxygen >= 30:
+                if timeOxygen >= 15:
                     player._oxygen += 1
                     timeOxygen = 0
                 else:
@@ -197,8 +198,8 @@ while True:
                     worm._life = False
                     worm_lst.remove(worm)
                 else:
+                    print("lost health due to worm")
                     player._health -= 1
-                    pass
 
         # Worm movement
         for worm in worm_lst:
@@ -215,22 +216,16 @@ while True:
 
         worm_frame += 1
 
-        # Lose oxygen every 10 seconds while on Mars
+        # Lose oxygen every 5 seconds while on Mars
         timeOnMars += 1
         if timeOnMars >= 75:
             player._oxygen -= 1
             timeOnMars = 0
         if player._oxygen <= 0:
+            print("lost health due to oxygen")
             player._health -= 1
 
-    if knife in player._tools:
-        if move:
-                stepsOnMars += 1
-                if stepsOnMars >= 15:
-                    player._oxygen -= 1
-                    stepsOnMars = 0
-                if player._oxygen <= 0:
-                    player._health -= 1
+
     if "knife" in player.tool_names():
         if not attack:
             if move and player_frame%5 < 3:
