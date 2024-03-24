@@ -64,7 +64,5 @@ class Player:
     
     # Encounter a worm
     def encounter_worm(self, worm):
-        if self.run_into_obj(worm):
-            return True
-        return False
+        return self.run_into_obj(worm)
     

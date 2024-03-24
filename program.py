@@ -11,7 +11,8 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 curMap = 0
-stepsOnMars = 0
+timeOnMars = 0
+timeOxygen = 0
 
 player = Player(1,1)
 player_x = player._x
@@ -47,14 +48,20 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-#player._tools = [knife, key, rations, tank]
+player._tools = [knife, key, rations, tank]
 
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
-safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
-safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
-safe3 = Safe("rations, backpack", 28, 28, "rations")
+safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
+safe3 = Safe("safe3", 28, 28, "safe")
 
 safes = [safe1, safe2, safe3]
+
+safe1_visited = False
+safe2_visited = False
+safe3_visited = False
+
 # code for opening safe, only uncomment after object.py is done
 length = 0
 print_str = ""
@@ -79,16 +86,28 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
+    # (0, 128)
+    for i in range(0, 3):
+        blt((scroll_x+31)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, -8, 8, colkey=3)
+        blt((scroll_x + 31 - len(player._tools) - 1)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, 8, 8, colkey=3)
     for i in range(len(player._tools)):
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, 8, 136, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 29)*size, 0, 8, 128, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
+    
 
 
+<<<<<<< HEAD
 # Initialize worms
 worm_frame = 0
 worm_lst = []
 a_worm = Worm()
 worm_lst.append(a_worm)
 
+=======
+player_frame = 0
+>>>>>>> ae535db57e0e0a1374278aa52fd8a316faa567ba
 
 while True:
     move = False
@@ -97,7 +116,7 @@ while True:
     py = player_y
     collision = False
     safe_collision = False
-    safe_num = 0
+    safe_num = 1
 
     # check if player is alive
     if not player.is_alive():
@@ -113,8 +132,6 @@ while True:
     
     prev_player_x = player_x
     prev_player_y = player_y
-
-    player_frame = 0
 
     # player movement
     if btn(KEY_RIGHT):
@@ -143,7 +160,9 @@ while True:
         for safe in safes:
             if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
                 safe_collision = True
-                safe_num = safe_num - 1 # which safe it is
+                if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
+                    collision = True
+                break
             safe_num = safe_num + 1
             if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
                 collision = True
@@ -174,10 +193,26 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
+<<<<<<< HEAD
 
         # Increase a worm every 4 sec
         if worm_frame % 60 == 59:
             worm = Worm() # NEED SPECIFY AREA
+=======
+        
+        # Safehouse encounter collision
+        for x, y in safeHouses:
+            if player_x == x and player_y == y:
+                if timeOxygen >= 15:
+                    player._oxygen += 1
+                    timeOxygen = 0
+                else:
+                    timeOxygen += 1
+        # Initialize worms
+        worm_lst = []
+        for i in range(100):
+            worm = Worm()
+>>>>>>> ae535db57e0e0a1374278aa52fd8a316faa567ba
             worm_lst.append(worm)
 
         worm_frame += 1
@@ -190,6 +225,7 @@ while True:
                     worm._life = False
                     worm_lst.remove(worm)
                 else:
+                    print("lost health due to worm")
                     player._health -= 1
 
         # Worm movement
@@ -205,15 +241,16 @@ while True:
         
 
 
-    if knife in player._tools:
-        print("done")
-        if move:
-                stepsOnMars += 1
-                if stepsOnMars >= 15:
-                    player._oxygen -= 1
-                    stepsOnMars = 0
-                if player._oxygen <= 0:
-                    player._health -= 1
+        # Lose oxygen every 5 seconds while on Mars
+        timeOnMars += 1
+        if timeOnMars >= 75:
+            player._oxygen -= 1
+            timeOnMars = 0
+        if player._oxygen <= 0:
+            print("lost health due to oxygen")
+            player._health -= 1
+
+
     if "knife" in player.tool_names():
         if not attack:
             if move and player_frame%5 < 3:
@@ -229,38 +266,56 @@ while True:
             draw_sprite(player_x,player_y, 1)
     
 
-    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
             
     if safe_collision == True:
-        if dialogue == 0:
-            print_str = "Would you like to open the safe? Y/N"
-        if btnp(KEY_Y):
-            if dialogue <= 1:
-                print_str = "Not so quick. (Press K)"
-                dialogue = 1
-            if dialogue == 6:
-                print_str = "Correct. As Baby Ben is a baby, he does lie down."
-                #safe number not thought
-                print("ss")
-                player._tools.append(knife)
-        if btnp(KEY_K):
-            if dialogue <= 2:
-                print_str = "A good astronaut remembers details..."
-                dialogue = 3
-            elif dialogue <= 3:
-                print_str = "Baby Ben lies."
-                dialogue = 4
-            elif dialogue <= 4:
-                print_str = "Baby Ben does not lie."
-                dialogue = 5
-            elif dialogue <= 5:
-                print_str = "Does Baby Ben lie? Y/N"
-                dialogue = 6
-        if btnp(KEY_N):
-            if dialogue == 6:
-                print_str = "Incorrect. One item has been lost. Permanently."
+        if safe_num == 1 and safe1_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Not so quick. (Press K)"
+                    dialogue = 1
+                if dialogue == 6:
+                    print_str = "Correct. As Baby Ben is a baby, he does lie down."
+                    #safe number not thought
+                    print("ss")
+                    player._tools.append(knife)
+                    safe1_visited = True
+                    dialogue = 0
+            if btnp(KEY_K):
+                if dialogue <= 2:
+                    print_str = "A good astronaut remembers details..."
+                    dialogue = 3
+                elif dialogue <= 3:
+                    print_str = "Baby Ben lies."
+                    dialogue = 4
+                elif dialogue <= 4:
+                    print_str = "Baby Ben does not lie."
+                    dialogue = 5
+                elif dialogue <= 5:
+                    print_str = "Does Baby Ben lie? Y/N"
+                    dialogue = 6
+            if btnp(KEY_N):
+                if dialogue == 6:
+                    print_str = "Incorrect. Please be better."
+        elif safe_num == 2 and safe2_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Another riddle awaits."
+                    dialogue = 1
+        elif safe_num == 3 and safe3_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Patience child"
+                    dialogue = 1
     else:
         print_str = ""
+        dialogue = 0
         
     if print_str != "":
         render_text(print_str)           
