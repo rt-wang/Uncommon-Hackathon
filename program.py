@@ -13,7 +13,6 @@ tm = Tilemap()
 curMap = 0
 
 player = Player(1,1)
-#player._tools.append("knife") # temp
 player_x = 1
 player_y = 1
 scroll_x = 0
@@ -46,7 +45,7 @@ key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
 
 #test
-player._tools = [knife, key, rations]
+#player._tools = [knife, key, rations]
 
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
@@ -176,7 +175,9 @@ while True:
             player_y = prev_player_y
             move = False
 
-    if "knife" in player.tool_names():
+    print(player._tools)
+    if knife in player._tools:
+        print("done")
         if not attack:
             if move:
                 draw_sprite(player_x,player_y,4)
@@ -211,6 +212,9 @@ while True:
                 dialogue = 1
             if dialogue == 6:
                 print_str = "Correct. As Baby Ben is a baby, he does lie down."
+                #safe number not thought
+                print("ss")
+                player._tools.append(knife)
         if btnp(KEY_K):
             if dialogue <= 2:
                 print_str = "A good astronaut remembers details..."
