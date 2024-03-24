@@ -2,12 +2,13 @@ from pyxel import *
 from background import *
 from player import Player
 from object import Safe
+from object import Equipment
 from background import Tilemap, sprite
 init(256, 256, fps=15)
 load('astronaut.pyxres')
 
 tm = Tilemap()
-# player = Player()
+player = Player(1, 1)
 player_x = 1
 player_y = 1
 scroll_x = 0
@@ -25,14 +26,21 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
 
-knife = Safe("knife", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
-tank = Safe("tank", 25, 9, "awhef") # 25 4 27 5
-letter = Safe("letter", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
-key = Safe("key", 4, 25, "whaeh")
-rations = Safe("rations", 28, 28, "rations")
-backpack = Safe("backpack", 28, 28, "waejf")
+knife = Equipment("knife", 0, 0, 0, 88)
+key = Equipment("key", 0, 0, 8, 88)
+rations = Equipment("rations", 0, 0, 8, 80)
 
-safes = [knife, tank, letter, key, rations, backpack]
+#test
+player._tools = [knife, key, rations]
+
+knife_safe = Safe("knife", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+tank_safe = Safe("tank", 25, 9, "awhef") # 25 4 27 5
+letter_safe = Safe("letter", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
+key_safe = Safe("key", 4, 25, "whaeh")
+rations_safe = Safe("rations", 28, 28, "rations")
+backpack_safe = Safe("backpack", 28, 28, "waejf")
+
+safes = [knife_safe, tank_safe, letter_safe, key_safe, rations_safe, backpack_safe]
 # code for opening safe, only uncomment after object.py is done
 
 def displaySafe(safes, player_x, player_y):        
@@ -60,6 +68,12 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
     #oxygen
     for i in range(0, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8)
+    
+    # inventory
+    for i in range(len(player._tools)):
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8)
+
+
 
 
 
@@ -112,7 +126,7 @@ while True:
         draw_sprite(player_x,player_y, 2)
     else:
         draw_sprite(player_x,player_y, 1)
-    displayUI(tm.scroll_x, tm.scroll_y, 8, 3, 5)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
     displaySafe(safes, player_x, player_y)
     flip()
 
