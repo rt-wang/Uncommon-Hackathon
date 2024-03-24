@@ -5,6 +5,10 @@ In order to run this game, you need to install pyxel, a 2D retro game engine for
 ```python
 pip install pyxel
 ```
+If you want to view the art for this game, run this:
+```python
+pyxel edit astronaut
+```
 Then you can run this game through the following command
 ```python
 pyxel run program.py
