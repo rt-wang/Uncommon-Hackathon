@@ -11,6 +11,7 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 curMap = 0
+stepsOnMars = 0
 
 player = Player(1,1)
 player_x = 1
@@ -43,9 +44,10 @@ def draw_sprite(player_x, player_y, frame):
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
+tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-#player._tools = [knife, key, rations]
+#player._tools = [knife, key, rations, tank]
 
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
@@ -92,6 +94,11 @@ while True:
     collision = False
     safe_collision = False
     safe_num = 0
+
+    # check if player is alive
+    if not player.is_alive():
+        print("player is dead")
+
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
@@ -119,9 +126,8 @@ while True:
         player_y = tm.y_scroll(player_y, -1)
     elif btn(KEY_DOWN):
         player_y = tm.y_scroll(player_y, 1)
-        move = True
-    
-    
+        move = True    
+
     #knife movement
     if btn(KEY_A):
         attack = True
@@ -196,6 +202,14 @@ while True:
 
     if knife in player._tools:
         print("done")
+        if move:
+                stepsOnMars += 1
+                if stepsOnMars >= 15:
+                    player._oxygen -= 1
+                    stepsOnMars = 0
+                if player._oxygen <= 0:
+                    player._health -= 1
+    if "knife" in player.tool_names():
         if not attack:
             if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)
@@ -208,6 +222,7 @@ while True:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
+    
 
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
             
