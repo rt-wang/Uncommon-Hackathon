@@ -6,7 +6,7 @@ from object import Equipment
 from background import Tilemap, sprite
 from object import Worm
 
-init(256, 256, fps=15)
+init(256, 256, fps=15, title="The Red Planet")
 load('astronaut.pyxres')
 
 
@@ -56,9 +56,9 @@ def draw_sprite(player_x, player_y, frame):
     
     elif frame == 6:
         if face_left:
-            sprite_2(player_x, player_y, 32, 80, flip = False)
+            sprite(player_x, player_y, 4, 10, flip = False)
         else:
-            sprite_2(player_x, player_y, 32, 80, flip = True)
+            sprite(player_x, player_y, 4, 10, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -119,7 +119,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-
 player_frame = 0
 
 while True:
@@ -131,6 +130,7 @@ while True:
     safe_collision = False
     bed_collision = False
     safe_num = 1
+    safe = False
 
 
     # check if player is alive
@@ -149,8 +149,8 @@ while True:
                 player = Player(1,1)
                 player_x = player._x
                 player_y = player._y
-                scroll_x = 0
-                scroll_y = 0
+                tm.scroll_x = 0
+                tm.scroll_y = 0
 
                 face_left = False
                 door = False
@@ -166,14 +166,16 @@ while True:
                 worm_lst = []
                 a_worm = Worm()
                 worm_lst.append(a_worm)
-
+                tm.draw(0)
                 break
+            
             flip()
 
 
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
+        curMap = 0
         tm.draw(curMap)
     else:
         curMap = 1
@@ -247,7 +249,7 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 60 == 0:
+        if worm_frame % 30 == 0:
             print("made")
             worm = Worm()
             worm_lst.append(worm) # NEED SPECIFY AREA
@@ -255,8 +257,9 @@ while True:
         # Safehouse encounter collision
         for x, y in safeHouses:
             if player_x == x and player_y == y:
+                safe = True
                 if timeOxygen >= 15:
-                    player._oxygen += 1
+                    player._oxygen = min(8, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
@@ -265,7 +268,7 @@ while True:
 
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
-            if worm_frame % 20 == 0 and worm._life: # worm speed
+            if worm_frame % 7 == 0 and worm._life: # worm speed
                 if worm.close_to_player(player):
                     print("close")
                     worm.chase(player)
@@ -277,9 +280,17 @@ while True:
             if met:
                 if health == 0:
                     encountered_worm.remove(worm)
+                    attack = False
                     print("killed")
                 else:
-                    player._health += health
+                    if not safe:
+                        player._health += health
+            if (worm._x, worm._y) in safeHouses:
+                    if worm_frame % 5 == 0:
+                        if not safe:
+                            player._health += health
+            if (worm._x and worm._y) in safeHouses:
+                encountered_worm.remove(worm)
             
 
         # Lose oxygen every 5 seconds while on Mars
@@ -293,6 +304,12 @@ while True:
                 bloodTimer = 0
                 print("lost health due to oxygen")
             bloodTimer += 1
+        
+        # moves player home if they pass by the home door
+        if player_x == 1 and player_y == 8:
+            door = False
+            player_x = 29
+            player_y = 15
             
 
 
@@ -362,7 +379,7 @@ while True:
                     print_str= "Would you like to read? (Y/N)"
                     dialogue = 6
                 elif dialogue == 7:
-                    print_str = "It’s always hot and dusty. I miss home."
+                    print_str = "It's always hot and dusty. I miss home."
                     dialogue = 8
                 elif dialogue == 8:
                     print_str = "I miss Martha and Ben so much."

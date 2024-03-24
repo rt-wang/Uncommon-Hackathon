@@ -12,15 +12,15 @@ class Equipment:
 
 class Worm:
     def __init__(self, life = True) -> None:
-        self._x = random.randint(0, 64)
-        self._y = random.randint(0, 64)
+        self._x = random.randint(0, 256)
+        self._y = random.randint(0, 256)
         self._life = life
         self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
         self.safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
     
-    def move_change_loc(self, x_change, y_change):
-        self._x += x_change
-        self._y += y_change
+    #def move_change_loc(self, x_change, y_change):
+       # self._x += x_change
+        # self._y += y_change
 
     def close_to_player(self, player) -> bool:
         if (self._x - player._x) < 200 or (self._y - player._y) < 200:
@@ -31,13 +31,13 @@ class Worm:
         x_diff = player._x*8 - self._x
         y_diff = player._y*8 - self._y
 
-        if ((0 <= x_diff <= 15) and abs(y_diff) <= 5):
+        if ((0 <= x_diff <= 20) and abs(y_diff) <= 10):
             if face_left and attack:
                 self._life = False
             elif abs(x_diff) <= 5 and abs(y_diff) <=5:
                 return (True, -1)
             return (True, 0)
-        elif ((0 >= x_diff >= - 15) and abs(y_diff) <= 5):
+        elif ((0 >= x_diff >= - 20) and abs(y_diff) <= 10):
             if (not face_left) and attack:
                 self._life = False
             elif abs(x_diff) <= 5 and abs(y_diff) <=5:
@@ -68,13 +68,19 @@ class Worm:
         blt(self._x, self._y, 1, 0, 8, 16, 8, colkey=3)
     
     def chase(self, player):
-        x_diff = player._x - self._x
-        y_diff = player._y - self._y
-        if (abs(x_diff) <= abs(y_diff)) and ((self._x and self._y) not in self.safeHouses):
-            self._x += 8
-        else:
-            self._y += 8
+        x_diff = player._x*8 - self._x
+        y_diff = player._y*8 - self._y
+        if x_diff != 0:
+            if abs(x_diff) >= 8:
+                self._x += 8 if x_diff > 0 else -8
+            else:
+                self._x += 2 if x_diff > 0 else -2
 
+        if y_diff != 0:
+            if abs(y_diff) >= 8:
+                self._y += 8 if y_diff > 0 else -8
+            else:
+                self._y += 2 if y_diff > 0 else -2
 
 
 class Safe: 
