@@ -47,7 +47,7 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-#player._tools = [knife, key, rations, tank]
+player._tools = [knife, key, rations, tank]
 
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
@@ -79,8 +79,16 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
+    # (0, 128)
+    for i in range(0, 3):
+        blt((scroll_x+31)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, -8, 8, colkey=3)
+        blt((scroll_x + 31 - len(player._tools) - 1)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, 8, 8, colkey=3)
     for i in range(len(player._tools)):
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, 8, 136, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 29)*size, 0, 8, 128, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
+    
 
 
 
