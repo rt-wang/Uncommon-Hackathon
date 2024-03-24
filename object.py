@@ -34,18 +34,18 @@ class Worm:
         if ((0 <= x_diff <= 20) and abs(y_diff) <= 10):
             if face_left and attack:
                 self._life = False
-            elif abs(x_diff) <= 5 and abs(y_diff) <=5:
+            if abs(x_diff) <= 5 and abs(y_diff) <=5:
                 return (True, -1)
             return (True, 0)
         elif ((0 >= x_diff >= - 20) and abs(y_diff) <= 10):
             if (not face_left) and attack:
                 self._life = False
-            elif abs(x_diff) <= 5 and abs(y_diff) <=5:
+            if abs(x_diff) <= 5 and abs(y_diff) <=5:
                 return (True, -1)
             return (True, 0)
 
         else:
-            return (False, 0 )
+            return (False, 0)
                 
 
     # def move(self):

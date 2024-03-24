@@ -358,8 +358,8 @@ while True:
         for worm in encountered_worm:
             worm.draw()
             met, health = worm.encounter_player(player, face_left, attack)
-            if met:
-                if health == 0:
+            if met:  
+                if attack and health == 0:
                     # encountered_worm.remove(worm)
                     worm_lst.remove(worm)
                     attack = False
@@ -368,10 +368,10 @@ while True:
                     if worm_frame % 3 == 0:
                         if not safe:
                             player._health += health
-            if (worm._x and worm._y) in safeHouses:
-                # encountered_worm.remove(worm)
-                print('died to safe house')
-                worm_lst.remove(worm)
+            for x, y in safeHouses:
+                if x <= worm._x <= x + 2 and y <= worm._y <= y + 2:
+                    print('died to safe house')
+                    worm_lst.remove(worm)
             
 
         # Lose oxygen every 5 seconds while on Mars
