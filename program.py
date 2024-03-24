@@ -256,15 +256,27 @@ while True:
 
         if player_x == 31 and (player_y == 15 or player_y == 16):
             door = True
+            player_x = 1
+            player_y = 10
+            tm.scroll_x = 0
+            tm.scroll_y = 0
 
         if collision == True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
     else: # in Mars
+        if "tank" not in player.tool_names():
+            player._oxygen = 0
+            player._health = 0
+
         if (player_x == 1) and (player_y == 8):
             door = False
             curMap = 0
+            player_x = 29
+            player_y = 15
+            tm.scroll_x = 0
+            tm.scroll_y = 0
         # fixHanger
         # nail
         if (player_x == 0 or player_x == 1) and (player_y == 14 or player_y == 15):    
@@ -327,7 +339,7 @@ while True:
             if player_x == x and player_y == y:
                 safe = True
                 if timeOxygen >= 15:
-                    player._oxygen = min(8, player._oxygen+1)
+                    player._oxygen = min(5, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
