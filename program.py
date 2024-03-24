@@ -149,8 +149,8 @@ while True:
                 player = Player(1,1)
                 player_x = player._x
                 player_y = player._y
-                scroll_x = 0
-                scroll_y = 0
+                tm.scroll_x = 0
+                tm.scroll_y = 0
 
                 face_left = False
                 door = False
@@ -166,8 +166,9 @@ while True:
                 worm_lst = []
                 a_worm = Worm()
                 worm_lst.append(a_worm)
-
+                tm.draw(0)
                 break
+            
             flip()
 
 
