@@ -14,8 +14,8 @@ curMap = 0
 stepsOnMars = 0
 
 player = Player(1,1)
-player_x = 1
-player_y = 1
+player_x = player._x
+player_y = player._y
 scroll_x = 0
 scroll_y = 0
 
@@ -83,7 +83,11 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
 
 
-
+# Initialize worms
+worm_frame = 0
+worm_lst = []
+a_worm = Worm()
+worm_lst.append(a_worm)
 
 
 while True:
@@ -128,8 +132,10 @@ while True:
         player_y = tm.y_scroll(player_y, 1)
         move = True    
 
+    player._x = player_x
+    player._y = player_y
     #knife movement
-    if btn(KEY_A):
+    if btn(KEY_A) and "knife" in player.tool_names():
         attack = True
 
     # room collision
@@ -160,7 +166,7 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
-    else:
+    else: # in Mars
         if player_x < 0 or player_y < 0 or player_x >= 63 or player_y >= 63: 
             collision = True
 
@@ -168,18 +174,19 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
-        # Initialize worms
-        worm_lst = []
-        for i in range(100):
-            worm = Worm()
+
+        # Increase a worm every 4 sec
+        if worm_frame % 60 == 59:
+            worm = Worm() # NEED SPECIFY AREA
             worm_lst.append(worm)
 
-        worm_frame = 0
+        worm_frame += 1
 
-        # Encounter worm, press F to kill the worm
+
+        # Encounter worm, press A to kill the worm
         for worm in worm_lst:
             if player.encounter_worm(worm):
-                if btn(KEY_F):
+                if attack: #btn(KEY_A)
                     worm._life = False
                     worm_lst.remove(worm)
                 else:
@@ -187,18 +194,16 @@ while True:
 
         # Worm movement
         for worm in worm_lst:
-            if not worm._chase and worm_frame%5 == 0:
-                worm.move()
-            else:
-                worm.chase(player)
-            if worm._life:
-                worm.draw()
+            if worm_frame % 10 == 0 and worm._life: # worm speed
+                if worm.close_to_player(player):
+                    worm.chase(player)
+                    print("chasing")
+                else:
+                    worm.move()
+            worm.draw()
 
-        worm.chase(player)
-        if worm._life:
-            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+        
 
-        worm_frame += 1
 
     if knife in player._tools:
         print("done")

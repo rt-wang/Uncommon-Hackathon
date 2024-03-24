@@ -44,7 +44,7 @@ class Player:
     
     # Check if the player is alive. If so, return True, and False otherwise.
     def is_alive(self) -> bool:
-        if self._health > 0:
+        if self._health > 0 and self._oxygen > 0:
             return True
         else:
             return False
