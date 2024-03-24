@@ -171,7 +171,7 @@ while True:
         player_y = prev_player_y
         move = False
 
-    if "knife" in player.tool_names():
+    if knife in player.tool_names():
         if not attack:
             draw_sprite(player_x,player_y,3)
             if move:
@@ -196,7 +196,7 @@ while True:
         else:
             worm.chase()
         if worm._life:
-            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+            worm.draw()
 
     flip()
     
