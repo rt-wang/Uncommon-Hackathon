@@ -20,6 +20,8 @@ player_y = player._y
 scroll_x = 0
 scroll_y = 0
 
+encountered_worm = []
+
 face_left = False
 door = False
 
@@ -46,9 +48,6 @@ knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
-
-#test
-player._tools = [knife, key, rations, tank]
 
 safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
@@ -101,8 +100,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-a_worm = Worm()
-worm_lst.append(a_worm)
 
 player_frame = 0
 
@@ -114,6 +111,7 @@ while True:
     collision = False
     safe_collision = False
     safe_num = 1
+
 
     # check if player is alive
     if not player.is_alive():
@@ -148,6 +146,7 @@ while True:
 
     player._x = player_x
     player._y = player_y
+
     #knife movement
     if btn(KEY_A) and "knife" in player.tool_names():
         attack = True
@@ -192,8 +191,10 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 60 == 59:
-            worm = Worm() # NEED SPECIFY AREA
+        if worm_frame % 60 == 0:
+            print("made")
+            worm = Worm()
+            worm_lst.append(worm) # NEED SPECIFY AREA
         
         # Safehouse encounter collision
         for x, y in safeHouses:
@@ -203,36 +204,27 @@ while True:
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
-        # Initialize worms
-        worm_lst = []
-        for i in range(100):
-            worm = Worm()
-            worm_lst.append(worm)
 
         worm_frame += 1
 
-
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
-            if player.encounter_worm(worm):
-                if attack: #btn(KEY_A)
-                    worm._life = False
-                    worm_lst.remove(worm)
-                else:
-                    print("lost health due to worm")
-                    player._health -= 1
-
-        # Worm movement
-        for worm in worm_lst:
-            if worm_frame % 10 == 0 and worm._life: # worm speed
+            if worm_frame % 20 == 0 and worm._life: # worm speed
                 if worm.close_to_player(player):
+                    print("close")
                     worm.chase(player)
-                    print("chasing")
-                else:
-                    worm.move()
+                    encountered_worm.append(worm)
+            
+        for worm in encountered_worm:
             worm.draw()
-
-        
+            met, health = worm.encounter_player(player, face_left, attack)
+            if met:
+                if health == 0:
+                    encountered_worm.remove(worm)
+                    print("killed")
+                else:
+                    player._health += health
+            
 
 
         # Lose oxygen every 5 seconds while on Mars
@@ -273,7 +265,6 @@ while True:
                 if dialogue == 6:
                     print_str = "Correct. As Baby Ben is a baby, he does lie down."
                     #safe number not thought
-                    print("ss")
                     player._tools.append(knife)
                     safe1_visited = True
                     dialogue = 0
