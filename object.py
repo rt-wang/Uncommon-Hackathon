@@ -50,6 +50,7 @@ class Safe:
             return True
         else:
             return False
+        
     def set_life(self, is_alive):
         self._life = is_alive
 
