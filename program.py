@@ -11,7 +11,8 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 curMap = 0
-stepsOnMars = 0
+timeOnMars = 0
+timeOxygen = 0
 
 player = Player(1,1)
 player_x = 1
@@ -49,6 +50,7 @@ tank = Equipment("tank", 0, 0, 0, 80)
 #test
 #player._tools = [knife, key, rations, tank]
 
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -167,6 +169,14 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
+        
+        for x, y in safeHouses:
+            if player_x == x and player_y == y:
+                if timeOxygen >= 30:
+                    player._oxygen += 1
+                    timeOxygen = 0
+                else:
+                    timeOxygen += 1
         # Initialize worms
         worm_lst = []
         for i in range(100):
@@ -199,13 +209,14 @@ while True:
             blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
 
         worm_frame += 1
-        if move:
-                stepsOnMars += 1
-                if stepsOnMars >= 15:
-                    player._oxygen -= 1
-                    stepsOnMars = 0
-                if player._oxygen <= 0:
-                    player._health -= 1
+
+        # Lose oxygen every 10 seconds while on Mars
+        timeOnMars += 1
+        if timeOnMars >= 75:
+            player._oxygen -= 1
+            timeOnMars = 0
+        if player._oxygen <= 0:
+            player._health -= 1
 
     if knife in player._tools:
         if not attack:
