@@ -9,10 +9,11 @@ class Equipment:
         self._y = y
 
 class Worm:
-    def __init__(self, x, y, life = True) -> None:
+    def __init__(self, x = random.randint(0, 256), y = random.randint(0, 256), life = True) -> None:
         self._x = x
         self._y = y
         self._life = life
+        self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
 
     
     def move_change_loc(self, x_change, y_change):
@@ -31,8 +32,28 @@ class Worm:
         # For b: 0 - -1 step; 1: 1 step
         a, b = (random.randint(0, 1), random.randint(0, 1))
         if a == 0:
-            self.move_change_loc(b)
+            if b == 0:
+                self.move_change_loc(0, -1)
+            else:
+                self.move_change_loc(0, 1)
         else:
+            if b == 0:
+                self.move_change_loc(-1, 0)
+            else:
+                self.move_change_loc(1, 0)
+
+    
+    def chase(self, player):
+        if self.close_to_player(player):
+            #self._chase = True
+            if self._x > player._x:
+                self._x -= 1
+            elif self._x < player._x:
+                self._x += 1
+            if self._y > player._y:
+                self._y -= 1
+            elif self._y < player._y:
+                self._y += 1
             self.move_change_loc(b)
 
 

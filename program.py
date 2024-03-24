@@ -3,6 +3,8 @@ from background import *
 from player import Player
 from object import Safe
 from background import Tilemap, sprite
+from object import Worm
+
 init(256, 256, fps=6)
 load('astronaut.pyxres')
 
@@ -15,6 +17,7 @@ scroll_x = 0
 scroll_y = 0
 
 face_left = False
+>>>>>>> fb270a71daee88529498ad3ae588cefe12736590
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
@@ -67,7 +70,27 @@ def display_safe(safes, player_x, player_y):
     #     else:
     #         text(10, 20, "Very sad :'(", 5)
 
+# Initialize worms
+worm_lst = []
+for i in range(5):
+    worm = Worm()
+    worm_lst.append(worm)
+
+
 while True:
+    # Worm movement
+    for worm in worm_lst:
+        if not worm._chase:
+            worm.move()
+        else:
+            worm.chase()
+        if worm._life:
+            blt(worm._x, worm._y, 2, 0, 0, 8, 8)
+
+    # Worm collide
+
+
+
     move = False
     attack = False
     px = player_x
@@ -80,6 +103,14 @@ while True:
     
     prev_player_x = player_x
     prev_player_y = player_y
+
+    # Encounter worm, press F to kill the worm
+    for worm in worm_lst:
+        if player.encounter_worm(worm):
+            if btn(KEY_F):
+                worm._life = False
+            else:
+                player._health -= 1
 
     # player movement
     if btn(KEY_RIGHT):
