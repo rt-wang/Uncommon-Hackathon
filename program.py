@@ -153,6 +153,7 @@ while True:
     bed_collision = False
     safe_num = 1
     safe = False
+    encountered_worm = []
 
 
     # check if player is alive
@@ -329,7 +330,7 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 30 == 0:
+        if worm_frame % 30 == 0 and len(worm_lst) <= 10:
             print("made")
             worm = Worm()
             worm_lst.append(worm) # NEED SPECIFY AREA
@@ -349,25 +350,28 @@ while True:
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
             if worm_frame % 7 == 0 and worm._life: # worm speed
-                if worm.close_to_player(player):
-                    print("close")
-                    worm.chase(player)
-                    encountered_worm.append(worm)
+                worm.chase(player) 
+            if worm.close_to_player(player) and worm._life:
+                # print("close")
+                encountered_worm.append(worm)
             
         for worm in encountered_worm:
             worm.draw()
             met, health = worm.encounter_player(player, face_left, attack)
             if met:
                 if health == 0:
-                    encountered_worm.remove(worm)
+                    # encountered_worm.remove(worm)
+                    worm_lst.remove(worm)
                     attack = False
                     print("killed")
                 else:
-                    if worm_frame % 5 == 0:
+                    if worm_frame % 3 == 0:
                         if not safe:
                             player._health += health
             if (worm._x and worm._y) in safeHouses:
-                encountered_worm.remove(worm)
+                # encountered_worm.remove(worm)
+                print('died to safe house')
+                worm_lst.remove(worm)
             
 
         # Lose oxygen every 5 seconds while on Mars
