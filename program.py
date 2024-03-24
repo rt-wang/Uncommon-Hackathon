@@ -52,11 +52,16 @@ tank = Equipment("tank", 0, 0, 0, 80)
 
 safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
-safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
-safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
-safe3 = Safe("rations, backpack", 28, 28, "rations")
+safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
+safe3 = Safe("safe3", 28, 28, "safe")
 
 safes = [safe1, safe2, safe3]
+
+safe1_visited = False
+safe2_visited = False
+safe3_visited = False
+
 # code for opening safe, only uncomment after object.py is done
 length = 0
 print_str = ""
@@ -87,8 +92,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 
 player_frame = 0
 
-
-
 while True:
     move = False
     attack = False
@@ -96,7 +99,7 @@ while True:
     py = player_y
     collision = False
     safe_collision = False
-    safe_num = 0
+    safe_num = 1
 
     # check if player is alive
     if not player.is_alive():
@@ -138,7 +141,9 @@ while True:
         for safe in safes:
             if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
                 safe_collision = True
-                safe_num = safe_num - 1 # which safe it is
+                if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
+                    collision = True
+                break
             safe_num = safe_num + 1
             if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
                 collision = True
@@ -236,35 +241,53 @@ while True:
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
             
     if safe_collision == True:
-        if dialogue == 0:
-            print_str = "Would you like to open the safe? Y/N"
-        if btnp(KEY_Y):
-            if dialogue <= 1:
-                print_str = "Not so quick. (Press K)"
-                dialogue = 1
-            if dialogue == 6:
-                print_str = "Correct. As Baby Ben is a baby, he does lie down."
-                #safe number not thought
-                print("ss")
-                player._tools.append(knife)
-        if btnp(KEY_K):
-            if dialogue <= 2:
-                print_str = "A good astronaut remembers details..."
-                dialogue = 3
-            elif dialogue <= 3:
-                print_str = "Baby Ben lies."
-                dialogue = 4
-            elif dialogue <= 4:
-                print_str = "Baby Ben does not lie."
-                dialogue = 5
-            elif dialogue <= 5:
-                print_str = "Does Baby Ben lie? Y/N"
-                dialogue = 6
-        if btnp(KEY_N):
-            if dialogue == 6:
-                print_str = "Incorrect. One item has been lost. Permanently."
+        if safe_num == 1 and safe1_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Not so quick. (Press K)"
+                    dialogue = 1
+                if dialogue == 6:
+                    print_str = "Correct. As Baby Ben is a baby, he does lie down."
+                    #safe number not thought
+                    print("ss")
+                    player._tools.append(knife)
+                    safe1_visited = True
+                    dialogue = 0
+            if btnp(KEY_K):
+                if dialogue <= 2:
+                    print_str = "A good astronaut remembers details..."
+                    dialogue = 3
+                elif dialogue <= 3:
+                    print_str = "Baby Ben lies."
+                    dialogue = 4
+                elif dialogue <= 4:
+                    print_str = "Baby Ben does not lie."
+                    dialogue = 5
+                elif dialogue <= 5:
+                    print_str = "Does Baby Ben lie? Y/N"
+                    dialogue = 6
+            if btnp(KEY_N):
+                if dialogue == 6:
+                    print_str = "Incorrect. Please be better."
+        elif safe_num == 2 and safe2_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Another riddle awaits."
+                    dialogue = 1
+        elif safe_num == 3 and safe3_visited == False:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Patience child"
+                    dialogue = 1
     else:
         print_str = ""
+        dialogue = 0
         
     if print_str != "":
         render_text(print_str)           
