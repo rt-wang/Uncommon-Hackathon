@@ -83,6 +83,7 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
 
 
+player_frame = 0
 
 
 
@@ -109,8 +110,6 @@ while True:
     
     prev_player_x = player_x
     prev_player_y = player_y
-
-    player_frame = 0
 
     # player movement
     if btn(KEY_RIGHT):
@@ -184,6 +183,7 @@ while True:
                     worm_lst.remove(worm)
                 else:
                     player._health -= 1
+                    pass
 
         # Worm movement
         for worm in worm_lst:
@@ -199,9 +199,6 @@ while True:
             blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
 
         worm_frame += 1
-
-    if knife in player._tools:
-        print("done")
         if move:
                 stepsOnMars += 1
                 if stepsOnMars >= 15:
@@ -209,7 +206,8 @@ while True:
                     stepsOnMars = 0
                 if player._oxygen <= 0:
                     player._health -= 1
-    if "knife" in player.tool_names():
+
+    if knife in player._tools:
         if not attack:
             if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)
@@ -224,7 +222,7 @@ while True:
             draw_sprite(player_x,player_y, 1)
     
 
-    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
             
     if safe_collision == True:
         if dialogue == 0:
