@@ -2,13 +2,14 @@ from pyxel import *
 from background import *
 from player import Player
 from background import Tilemap, sprite
+from object import Worm
 init(256, 256, fps=15)
 load('astronaut.pyxres')
 
 tm = Tilemap()
-#player = Player()
-player_x = 1
-player_y = 1
+player = Player()
+player_x = player._x
+player_y = player._y
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
@@ -32,12 +33,40 @@ def openSafe(safe, player):
         else:
             return False
 
+# Initialize worms
+worm_lst = []
+for i in range(5):
+    worm = Worm()
+    worm_lst.append(worm)
+
+
 while True:
+    # Worm movement
+    for worm in worm_lst:
+        if not worm._chase:
+            worm.move()
+        else:
+            worm.chase()
+        if worm._life:
+            blt(worm._x, worm._y, 2, 0, 0, 8, 8)
+
+    # Worm collide
+        
+
+
     move = False
     px = player_x
     py = player_y
     #pl = (player_x//8, player_y//8)
     cls(0)
+
+    # Encounter worm, press F to kill the worm
+    for worm in worm_lst:
+        if player.encounter_worm(worm):
+            if btn(KEY_F):
+                worm._life = False
+            else:
+                player._health -= 1
 
     # player movement
     if btn(KEY_RIGHT):
