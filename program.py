@@ -141,10 +141,7 @@ while True:
         player_y = tm.y_scroll(player_y, -1)
     elif btn(KEY_DOWN):
         player_y = tm.y_scroll(player_y, 1)
-        move = True
-    
-    # oxygen decrease/health decrease when oxygen is 0
-    
+        move = True    
 
     #knife movement
     if btn(KEY_A):
