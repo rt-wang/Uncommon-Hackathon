@@ -262,6 +262,9 @@ while True:
             player_y = prev_player_y
             move = False
     else: # in Mars
+        if (player_x == 1) and (player_y == 8):
+            door = False
+            curMap = 0
         # fixHanger
         # nail
         if (player_x == 0 or player_x == 1) and (player_y == 14 or player_y == 15):    
