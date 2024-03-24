@@ -11,9 +11,9 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 curMap = 0
+stepsOnMars = 0
 
 player = Player(1,1)
-#player._tools.append("knife") # temp
 player_x = 1
 player_y = 1
 scroll_x = 0
@@ -44,9 +44,10 @@ def draw_sprite(player_x, player_y, frame):
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
+tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-player._tools = [knife, key, rations]
+#player._tools = [knife, key, rations, tank]
 
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
@@ -89,6 +90,9 @@ for i in range(100):
     worm = Worm()
     worm_lst.append(worm)
 
+worm_frame = 0
+player_frame = 0
+
 
 while True:
     move = False
@@ -98,6 +102,11 @@ while True:
     collision = False
     safe_collision = False
     safe_num = 0
+
+    # check if player is alive
+    if not player.is_alive():
+        print("player is dead")
+
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
@@ -132,9 +141,8 @@ while True:
         player_y = tm.y_scroll(player_y, -1)
     elif btn(KEY_DOWN):
         player_y = tm.y_scroll(player_y, 1)
-        move = True
-    
-    
+        move = True    
+
     #knife movement
     if btn(KEY_A):
         attack = True
@@ -176,26 +184,37 @@ while True:
             player_y = prev_player_y
             move = False
 
+    print(player._tools)
+    if knife in player._tools:
+        print("done")
+        if move:
+                stepsOnMars += 1
+                if stepsOnMars >= 15:
+                    player._oxygen -= 1
+                    stepsOnMars = 0
+                if player._oxygen <= 0:
+                    player._health -= 1
     if "knife" in player.tool_names():
         if not attack:
-            if move:
+            if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)
             else:
                 draw_sprite(player_x,player_y,3)
         else:
             draw_sprite(player_x,player_y,5)
     else:
-        if move:
+        if move and player_frame%5 < 3:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
+    
 
-    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
 
 
     # Worm movement
     for worm in worm_lst:
-        if not worm._chase:
+        if not worm._chase and worm_frame%5 == 0:
             worm.move()
         else:
             worm.chase(player)
@@ -211,6 +230,9 @@ while True:
                 dialogue = 1
             if dialogue == 6:
                 print_str = "Correct. As Baby Ben is a baby, he does lie down."
+                #safe number not thought
+                print("ss")
+                player._tools.append(knife)
         if btnp(KEY_K):
             if dialogue <= 2:
                 print_str = "A good astronaut remembers details..."
@@ -236,6 +258,9 @@ while True:
     worm.chase(player)
     if worm._life:
         blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+
+    worm_frame += 1
+    player_frame += 1
 
     flip()
     
