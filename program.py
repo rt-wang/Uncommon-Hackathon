@@ -164,7 +164,7 @@ while True:
         player_y = prev_player_y
         move = False
 
-    if "knife" in player.tool_names():
+    if knife in player.tool_names():
         if not attack:
             draw_sprite(player_x,player_y,3)
             if move:
@@ -174,7 +174,6 @@ while True:
     else:
         draw_sprite(player_x,player_y, 1)
 
-    display_safe(safes, player_x, player_y)
     if move:
         draw_sprite(player_x,player_y, 2)
     else:
@@ -187,6 +186,9 @@ while True:
         if not worm._chase:
             worm.move()
         else:
+            worm.chase(player)
+        if worm._life:
+            worm.draw()
             draw_sprite(player_x,player_y, 1)
             
     if safe_collision == True:
@@ -214,17 +216,20 @@ while True:
         if btnp(KEY_N):
             if dialogue == 6:
                 print_str = "Incorrect. One item has been lost. Permanently."
-            
-            
+              
     else:
         print_str = ""
 
     render_text(print_str)           
+<<<<<<< HEAD
             
     worm.chase(player)
     if worm._life:
         blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
         
+=======
+
+>>>>>>> 087d526c9b088abda66ebf420e37af3235943f3f
     flip()
     
 # Plan for the safe
