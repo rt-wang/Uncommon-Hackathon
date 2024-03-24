@@ -78,7 +78,7 @@ wood = Equipment("wood", 55, 0)
 #test
 # player._tools = [knife, key, rations, tank]
 
-safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51), (26, 35)]
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
 safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -173,6 +173,7 @@ while True:
 
                 worm_frame = 0
                 worm_lst = []
+                encountered_worm = []
                 a_worm = Worm()
                 worm_lst.append(a_worm)
                 tm.draw(0)
@@ -184,7 +185,6 @@ while True:
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
-        curMap = 0
         tm.draw(curMap)
     else:
         curMap = 1
@@ -272,58 +272,7 @@ while True:
         if fixHanger == 3:
             hanger = True
         
-        if (player_x >= 57 and player_x <= 59) and (player_y >= 6 and player_y <= 9):
-            # reached the statue
-            collision = True
-            ending = True
-        if ending == True:
-            if dialogue == 0:
-                print_str = "Would you like to open the safe? Y/N"
-            if btnp(KEY_Y):
-                if dialogue <= 1:
-                    print_str = "Another riddle awaits..."
-                    player._tools.append(key)
-                    dialogue = 2
-                elif dialogue == 6:
-                    print_str = "Dear ----,"
-                    dialogue = 7
-            if btnp(KEY_K):
-                if dialogue == 2:
-                    print_str = "There is a letter as well..."
-                    dialogue = 3
-                elif dialogue == 3:
-                    print_str = "Very clearly worn down from reading, "
-                    dialogue = 4
-                elif dialogue == 4:
-                    print_str = "many words are smudged beyond recognition."
-                    dialogue = 5
-                elif dialogue == 5:
-                    print_str= "Would you like to read? (Y/N)"
-                    dialogue = 6
-                elif dialogue == 7:
-                    print_str = "It’s always hot and dusty. I miss home."
-                    dialogue = 8
-                elif dialogue == 8:
-                    print_str = "I miss Martha and Ben so much."
-                    dialogue = 9
-                elif dialogue == 9:
-                    print_str = "It's a lonesome existence, being the -----."
-                    dialogue = 10
-                elif dialogue == 10:
-                    print_str = "I miss everyone. They are probably all -----."
-                    dialogue = 11
-                elif dialogue == 10:
-                    print_str = "I wonder, sometimes, if it's even ------"
-                    dialogue = 11   
-                elif dialogue == 11:
-                    print_str = "I hope you understand when -----"
-                    dialogue = 12
-                elif dialogue == 12:
-                    print_str = "Sincerely, -----"
-                    dialogue = 13
-                    safe2_visited = True
-        if print_str != "":
-            render_text(print_str) 
+        
         if (player_x >= 20 and player_x <= 23) or (player_y >= 0 and player_y <= 3):
             hanger_visited = True
             # if btnp(KEY_K):
@@ -380,16 +329,11 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    if worm_frame % 10 == 0:
+                    if worm_frame % 5 == 0:
                         if not safe:
                             player._health += health
-            
-            for x,y in safeHouses:
-                if x - 1 <= worm._x <= x + 2 and y - 1 <= worm._y <= y + 2:
-                    encountered_worm.remove(worm)
-                    worm_lst.remove(worm)
-            #if (worm._x, worm._y) in safeHouses:
-                
+            if (worm._x and worm._y) in safeHouses:
+                encountered_worm.remove(worm)
             
 
         # Lose oxygen every 5 seconds while on Mars
@@ -403,16 +347,89 @@ while True:
                 bloodTimer = 0
                 print("lost health due to oxygen")
             bloodTimer += 1
-        
-        # moves player home if they pass by the home door
-        if player_x == 1 and player_y == 8:
-            door = False
-            player_x = 29
-            player_y = 15
             
 
-
-    if bed_collision == True:
+    if (player_x >= 57 and player_x <= 59) and (player_y >= 6 and player_y <= 9):
+            # reached the statue
+            collision = True
+            if dialogue == 0:
+                print_str = "Read the plaque. (Y/N)"
+                dialogue = 1
+            if btnp(KEY_Y):
+                if dialogue == 1:
+                    print_str = "There was never a choice to make."
+                    dialogue = 6
+            if btnp(KEY_K):
+                # if dialogue == 2:
+                #     print_str = "I came to Mars to give humanity hope."
+                #     dialogue = 3
+                # elif dialogue == 3:
+                #     print_str = "I end my journey as the last hope of humanity."
+                #     dialogue = 10
+                # elif dialogue == 4:
+                #     print_str = "We were told it might finally be the end for Earth a year before"
+                #     dialogue = 5
+                # elif dialogue == 5:
+                #     print_str = "Everyone went back in hopes of protecting the world"
+                #     dialogue = 6
+                if dialogue == 6:
+                    print_str = "We needed someone to stay behind."
+                    dialogue = 7
+                elif dialogue == 7:
+                    print_str = "Just in case the world really ended."
+                    dialogue = 8
+                elif dialogue == 8:
+                    print_str = "I didn't want to"
+                    dialogue = 9
+                elif dialogue == 9:
+                    print_str = "but there was no one else who knew what I did."
+                    dialogue = 10
+                elif dialogue == 10:
+                    print_str = "I never said goodbye to Martha"
+                    dialogue = 11
+                elif dialogue == 11:
+                    print_str = "and I never got to say hello to Ben"
+                    dialogue = 12
+                elif dialogue == 12:
+                    print_str = "I always have that temptation"
+                    dialogue = 13
+                elif dialogue == 13:
+                    print_str = "to go back to Earth."
+                    dialogue = 14
+                elif dialogue == 14:
+                    print_str = "Just to see that it's really gone"
+                    dialogue = 15
+                elif dialogue == 15:
+                    print_str = "Because I know it is, but I don't KNOW."
+                    dialogue = 16
+                elif dialogue == 16:
+                    print_str = "I stay, though, for the last of humanity"
+                    dialogue = 20
+                # elif dialogue == 17:
+                #     print_str = "And sometimes I wonder, is it worth it?"
+                #     dialogue = 18
+                # elif dialogue == 18:
+                #     print_str = "They'll live their lives trapped in a suit"
+                #     dialogue = 19
+                # elif dialogue == 19:
+                #     print_str = "They won't know ice cream or candy"
+                #     dialogue = 20
+                elif dialogue == 20:
+                    print_str = "They won't know the small joys of life as we do"
+                    dialogue = 21
+                elif dialogue == 21:
+                    print_str = "But, I'll make sure they still know joy."
+                    dialogue = 22
+                elif dialogue == 22:
+                    print_str = "So I watch the last light go out on Earth"
+                    dialogue = 23
+                elif dialogue == 23:
+                    print_str = "And I stayed here. Alive. Living."
+                    dialogue = 24
+                elif dialogue == 24:
+                    print_str = "Sincerely, -----"
+                    dialogue = 25
+    elif bed_collision == True:
         if dialogue == 0:
             print_str = "Would you like to go to sleep? Y/N"
         if btnp(KEY_Y):
@@ -478,7 +495,7 @@ while True:
                     print_str= "Would you like to read? (Y/N)"
                     dialogue = 6
                 elif dialogue == 7:
-                    print_str = "It's always hot and dusty. I miss home."
+                    print_str = "It’s always hot and dusty. I miss home."
                     dialogue = 8
                 elif dialogue == 8:
                     print_str = "I miss Martha and Ben so much."
