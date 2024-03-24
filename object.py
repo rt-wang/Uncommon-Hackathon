@@ -3,7 +3,7 @@ import math, random
 
 class Equipment:
 
-    def __init__(self, name, x, y, u=0, v=0) -> None:
+    def __init__(self, name, x=0, y=0, u=0, v=0) -> None:
         self._name = name # string specify the name of the tool
         self._x = x
         self._y = y
@@ -66,10 +66,9 @@ class Safe:
         self._name = name
         self._x = x
         self._y = y
-        self._text = text
-
-    # def open_safe(self) -> bool:
-       
+        self._text = text        
+            
+            
     def set_life(self, is_alive):
         self._life = is_alive
 

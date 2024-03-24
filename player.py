@@ -3,7 +3,7 @@ from object import Equipment, Worm
 
 class Player:
 
-    def __init__(self, x = 0, y = 0, health = 3, oxygen = True, food = True) -> None:
+    def __init__(self, x = 0, y = 0, health = 3, oxygen = 5, food = True) -> None:
         """
         health[int]: 0 is death, and higher value coresponds to more health.
         oxygen[int]
@@ -38,13 +38,13 @@ class Player:
             if each.name == "backpack":
                 self.tools.append(tool)
             else:
-                if tool.name == "knife":
+                if tool._name == "knife":
                     self._tools.append(tool)
 
     
     # Check if the player is alive. If so, return True, and False otherwise.
     def is_alive(self) -> bool:
-        if self._health > 0 and self._oxygen > 0 and self._food > 0:
+        if self._health > 0:
             return True
         else:
             return False
