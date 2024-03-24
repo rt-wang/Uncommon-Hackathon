@@ -174,6 +174,7 @@ while True:
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
+        curMap = 0
         tm.draw(curMap)
     else:
         curMap = 1
@@ -283,7 +284,7 @@ while True:
                 else:
                     if not safe:
                         player._health += health
-            if (worm._x and worm._y) in safeHouses:
+            if (worm._x, worm._y) in safeHouses:
                 encountered_worm.remove(worm)
             
 
@@ -298,6 +299,12 @@ while True:
                 bloodTimer = 0
                 print("lost health due to oxygen")
             bloodTimer += 1
+        
+        # moves player home if they pass by the home door
+        if player_x == 1 and player_y == 8:
+            door = False
+            player_x = 29
+            player_y = 15
             
 
 
