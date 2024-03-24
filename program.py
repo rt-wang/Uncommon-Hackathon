@@ -25,6 +25,11 @@ timeOxygen = 0
 bloodTimer = 0
 
 fixHanger = 0
+# make sure no repeat pick ups
+oneNail = 0
+oneWood = 0
+oneOil = 0
+
 hanger = False
 hanger_visited = False
 
@@ -263,19 +268,25 @@ while True:
             collision = True
             if hanger_visited == True:
                 fixHanger += 1
-                player._tools.append(nail)
+                if oneNail == 0:
+                    player._tools.append(nail)
+                oneNail += 1
         # oil
         if (player_x == 40 or player_x == 41 or player_x == 42) and (player_y == 0 or player_y == 1):    
             if hanger_visited == True:
                 fixHanger += 1
                 collision = True
-                player._tools.append(oil)
+                if oneOil == 0:
+                    player._tools.append(oil)
+                oneOil += 1
         #wood
         if (player_x == 55 or player_x == 56) and (player_y == 0 or player_y == 1):    
             if hanger_visited == True:
                 fixHanger += 1
                 collision = True
-                player._tools.append(wood)
+                if oneWood == 0:
+                    player._tools.append(wood)
+                oneWood += 1
         
         if fixHanger == 3:
             hanger = True
@@ -595,7 +606,7 @@ while True:
                     player._tools.append(rations)
                     player._tools.append(tank)
                     safe3_visited = True
-                else:
+                elif btnp(KEY_2) or btnp(KEY_3) or btnp(KEY_4) or btnp(KEY_5) or btnp(KEY_6):
                     print_str = "No. No. No."
                     
     else:
