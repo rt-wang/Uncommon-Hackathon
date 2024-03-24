@@ -349,7 +349,7 @@ while True:
             bloodTimer += 1
             
 
-    if (player_x >= 57 and player_x <= 59) and (player_y >= 6 and player_y <= 9):
+    if (player_x >= 48 and player_x <= 52) and (player_y >= 0 and player_y <= 5):
             # reached the statue
             collision = True
             if dialogue == 0:
@@ -473,14 +473,21 @@ while True:
         elif safe_num == 2 and safe2_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
+                dialogue = 1
             if btnp(KEY_Y):
-                if dialogue <= 1:
+                if dialogue == 1:
                     print_str = "Another riddle awaits..."
-                    player._tools.append(key)
-                    dialogue = 2
+                    dialogue = 14
                 elif dialogue == 6:
                     print_str = "Dear ----,"
                     dialogue = 7
+                elif dialogue == 16:
+                    print_str = "Correct, T-H-A-T!"
+                    player._tools.append(key)
+                    dialogue = 2
+            if btnp(KEY_N):
+                if dialogue == 16:
+                    print_str = "Try again."
             if btnp(KEY_K):
                 if dialogue == 2:
                     print_str = "There is a letter as well..."
@@ -516,16 +523,73 @@ while True:
                     print_str = "Sincerely, -----"
                     dialogue = 13
                     safe2_visited = True
+                elif dialogue == 14:
+                    print_str = "Mississipi is a pretty hard word to spell."
+                    dialogue = 15
+                elif dialogue == 15:
+                    print_str = "Can you spell that without 'I's and 'S's? Y/N"
+                    dialogue = 16
+                
         elif safe_num == 3 and safe3_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
+                dialogue = 1
             if btnp(KEY_Y):
-                if dialogue <= 1:
-                    print_str = "Patience child"
-                    dialogue = 1
+                if dialogue == 1:
+                    print_str = "My wife, Martha, is from Mississipi"
+                    dialogue = 2
+            if btnp(KEY_K):
+                if dialogue == 2:
+                    print_str = "I miss her quite a bit."
+                    dialogue = 3
+                elif dialogue == 3:
+                    print_str = "She's always loved puzzles."
+                    dialogue = 4
+                elif dialogue == 4:
+                    print_str = "So I've started making them as well"
+                    dialogue = 5
+                elif dialogue == 5:
+                    print_str = "Answer me this, what comes once in a minute"
+                    dialogue = 6
+                elif dialogue == 6:
+                    print_str = "twice in a moment"
+                    dialogue = 7
+                elif dialogue == 7:
+                    print_str = "but NEVER in a thousand years?"
+                    dialogue = 8
+                elif dialogue == 8:
+                    print_str = "1. M"
+                    dialogue = 9
+                elif dialogue == 9:
+                    print_str = "2. A"
+                    dialogue = 10
+                elif dialogue == 10:
+                    print_str = "3. R"
+                    dialogue = 11
+                elif dialogue == 11:
+                    print_str = "4. T"
+                    dialogue = 12
+                elif dialogue  == 12:
+                    print_str = "5. H"
+                    dialogue = 13
+                elif dialogue == 13:
+                    print_str = "6. A"
+                    dialogue = 14
+                elif dialogue == 14:
+                    print_str = "oops I repeated that one, didn't I?"
+                    dialogue = 15
+                elif dialogue == 15:
+                    print_str = "Type your answer (1, 2, 3, 4, 5)"
+                    dialogue = 16
+            if dialogue == 16:
+                if btnp(KEY_1):
+                    print_str = "Correct!"
                     player._tools.append(rations)
                     player._tools.append(tank)
                     safe3_visited = True
+                else:
+                    print_str = "No. No. No."
+                    
     else:
         print_str = ""
         dialogue = 0
