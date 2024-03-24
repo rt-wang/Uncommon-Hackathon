@@ -35,26 +35,17 @@ backpack = Safe("backpack", 28, 28, "waejf")
 safes = [knife, tank, letter, key, rations, backpack]
 # code for opening safe, only uncomment after object.py is done
 
-def openSafe(safes, player_x, player_y):
-    
-    text(30 + tm.scroll_x * 8, 30 + tm.scroll_y * 8, f"ur coords: {player_x}, {player_y}", 7)
-    for safe in safes: # dont for each position in the safe positions
-        if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
-            # set_tool(safe.text) # sets the tool that has been picked up from safe
-            # text(safe.x, safe.y, safe.text, 7) # displays text where the safe is opened
-            rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 150, 10, 0)
-            text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Would you like to open the safe? Y/N", 7)
-            if btnp(KEY_Y):
-                text(10, 20, "Not so fast... First you must solve a riddle. (Press A to continue)", 7)
-                if btnp(KEY_A):
-                    safe.open_safe()
-                else:
-                    text(10, 20, "Ok. Sad :'(.", 6)
-            else:
-                text(10, 20, "Very sad :'(", 5)
-            
-                
-    return True
+def displaySafe(safes, player_x, player_y):        
+    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 150, 10, 0)
+    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Would you like to open the safe? Y/N", 7)
+    # if btnp(KEY_Y):
+    #         text(10, 20, "Not so fast... First you must solve a riddle. (Press A to continue)", 7)
+    #         if btnp(KEY_A):
+    #             safe.open_safe()
+    #         else:
+    #             text(10, 20, "Ok. Sad :'(.", 6)    
+    #     else:
+    #         text(10, 20, "Very sad :'(", 5)
 
 while True:
     move = False
@@ -105,6 +96,6 @@ while True:
         draw_sprite(player_x,player_y, 2)
     else:
         draw_sprite(player_x,player_y, 1)
-    openSafe(safes, player_x, player_y)
+    displaySafe(safes, player_x, player_y)
     flip()
 
