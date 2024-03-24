@@ -238,7 +238,7 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 60 == 0:
+        if worm_frame % 30 == 0:
             print("made")
             worm = Worm()
             worm_lst.append(worm) # NEED SPECIFY AREA
@@ -268,6 +268,7 @@ while True:
             if met:
                 if health == 0:
                     encountered_worm.remove(worm)
+                    attack = False
                     print("killed")
                 else:
                     player._health += health

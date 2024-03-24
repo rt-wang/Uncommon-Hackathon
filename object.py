@@ -12,8 +12,8 @@ class Equipment:
 
 class Worm:
     def __init__(self, life = True) -> None:
-        self._x = random.randint(0, 64)
-        self._y = random.randint(0, 64)
+        self._x = random.randint(0, 256)
+        self._y = random.randint(0, 256)
         self._life = life
         self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
         self.safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
@@ -31,16 +31,16 @@ class Worm:
         x_diff = player._x*8 - self._x
         y_diff = player._y*8 - self._y
 
-        if ((0 <= x_diff <= 15) and abs(y_diff) <= 5):
+        if ((0 <= x_diff <= 20) and abs(y_diff) <= 10):
             if face_left and attack:
                 self._life = False
-            elif abs(x_diff) <= 5 and abs(y_diff) <=5:
+            elif abs(x_diff) <= 10 and abs(y_diff) <=10:
                 return (True, -1)
             return (True, 0)
-        elif ((0 >= x_diff >= - 15) and abs(y_diff) <= 5):
+        elif ((0 >= x_diff >= - 20) and abs(y_diff) <= 10):
             if (not face_left) and attack:
                 self._life = False
-            elif abs(x_diff) <= 5 and abs(y_diff) <=5:
+            elif abs(x_diff) <= 10 and abs(y_diff) <=10:
                 return (True, -1)
             return (True, 0)
 
