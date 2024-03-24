@@ -78,7 +78,7 @@ wood = Equipment("wood", 55, 0)
 #test
 # player._tools = [knife, key, rations, tank]
 
-safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51), (26, 35)]
 
 safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -184,6 +184,7 @@ while True:
     #pl = (player_x//8, player_y//8)
     cls(0)
     if not door:
+        curMap = 0
         tm.draw(curMap)
     else:
         curMap = 1
@@ -379,11 +380,16 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    if worm_frame % 5 == 0:
+                    if worm_frame % 10 == 0:
                         if not safe:
                             player._health += health
-            if (worm._x and worm._y) in safeHouses:
-                encountered_worm.remove(worm)
+            
+            for x,y in safeHouses:
+                if x - 1 <= worm._x <= x + 2 and y - 1 <= worm._y <= y + 2:
+                    encountered_worm.remove(worm)
+                    worm_lst.remove(worm)
+            #if (worm._x, worm._y) in safeHouses:
+                
             
 
         # Lose oxygen every 5 seconds while on Mars
@@ -397,6 +403,12 @@ while True:
                 bloodTimer = 0
                 print("lost health due to oxygen")
             bloodTimer += 1
+        
+        # moves player home if they pass by the home door
+        if player_x == 1 and player_y == 8:
+            door = False
+            player_x = 29
+            player_y = 15
             
 
 
@@ -466,7 +478,7 @@ while True:
                     print_str= "Would you like to read? (Y/N)"
                     dialogue = 6
                 elif dialogue == 7:
-                    print_str = "It’s always hot and dusty. I miss home."
+                    print_str = "It's always hot and dusty. I miss home."
                     dialogue = 8
                 elif dialogue == 8:
                     print_str = "I miss Martha and Ben so much."
