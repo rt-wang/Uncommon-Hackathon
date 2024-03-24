@@ -48,7 +48,7 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-player._tools = [knife, key, rations, tank]
+# player._tools = [knife, key, rations, tank]
 
 safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
@@ -119,6 +119,12 @@ while True:
     # check if player is alive
     if not player.is_alive():
         print("player is dead")
+        curMap = 2
+        tm.draw(curMap)
+        while True:
+            if btn(KEY_SPACE):
+
+
 
     #pl = (player_x//8, player_y//8)
     cls(0)
