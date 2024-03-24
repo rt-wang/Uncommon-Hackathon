@@ -50,6 +50,7 @@ class Worm:
     
     def chase(self, player):
         if self.close_to_player(player):
+            self._chase = True
             if self._x > player._x:
                 self._x -= 1
             elif self._x < player._x:
