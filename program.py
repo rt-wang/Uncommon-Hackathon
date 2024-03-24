@@ -9,6 +9,15 @@ from object import Worm
 init(256, 256, fps=15)
 load('astronaut.pyxres')
 
+
+#test
+#from PIL import Image
+#img = Image.open("game_over.jpg")
+#img = Image.load(game_over.jpg)
+
+#img.show()
+
+
 tm = Tilemap()
 curMap = 0
 timeOnMars = 0
@@ -331,4 +340,3 @@ while True:
             c. for letter, using item means reading it
             d. for rations, using item means eating it (so its gone)
 '''
-
