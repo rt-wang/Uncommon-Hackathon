@@ -56,9 +56,9 @@ def draw_sprite(player_x, player_y, frame):
     
     elif frame == 6:
         if face_left:
-            sprite_2(player_x, player_y, 32, 80, flip = False)
+            sprite(player_x, player_y, 4, 10, flip = False)
         else:
-            sprite_2(player_x, player_y, 32, 80, flip = True)
+            sprite(player_x, player_y, 4, 10, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -119,7 +119,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-
 player_frame = 0
 
 while True:
@@ -131,6 +130,7 @@ while True:
     safe_collision = False
     bed_collision = False
     safe_num = 1
+    safe = False
 
 
     # check if player is alive
@@ -255,8 +255,9 @@ while True:
         # Safehouse encounter collision
         for x, y in safeHouses:
             if player_x == x and player_y == y:
+                safe = True
                 if timeOxygen >= 15:
-                    player._oxygen += 1
+                    player._oxygen = min(8, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
@@ -280,7 +281,8 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    player._health += health
+                    if not safe:
+                        player._health += health
             
 
         # Lose oxygen every 5 seconds while on Mars
