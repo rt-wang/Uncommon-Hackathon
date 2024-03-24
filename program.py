@@ -22,12 +22,15 @@ tm = Tilemap()
 curMap = 0
 timeOnMars = 0
 timeOxygen = 0
+bloodTimer = 0
 
 player = Player(1,1)
 player_x = player._x
 player_y = player._y
 scroll_x = 0
 scroll_y = 0
+
+encountered_worm = []
 
 face_left = False
 door = False
@@ -50,6 +53,12 @@ def draw_sprite(player_x, player_y, frame):
             sprite_2(player_x, player_y, 28, 48, flip = False)
         else:
             sprite_2(player_x, player_y, 28, 48, flip = True)
+    
+    elif frame == 6:
+        if face_left:
+            sprite_2(player_x, player_y, 32, 80, flip = False)
+        else:
+            sprite_2(player_x, player_y, 32, 80, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -57,7 +66,7 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-player._tools = [knife, key, rations, tank]
+# player._tools = [knife, key, rations, tank]
 
 safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
@@ -77,8 +86,8 @@ print_str = ""
 dialogue = 0
 
 def render_text(str):
-    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 180 + tm.scroll_x, 10, 0)
-    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, str, 7)
+    rect(19 + tm.scroll_x * 8, 28 + tm.scroll_y * 8, 200 + tm.scroll_x, 10, 0)
+    text(20 + tm.scroll_x * 8, 30 + tm.scroll_y * 8, str, 7)
 
 def displayUI(scroll_x, scroll_y, size, health, oxygen):
     # backdrop
@@ -110,8 +119,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-a_worm = Worm()
-worm_lst.append(a_worm)
 
 player_frame = 0
 
@@ -122,11 +129,47 @@ while True:
     py = player_y
     collision = False
     safe_collision = False
+    bed_collision = False
     safe_num = 1
+
 
     # check if player is alive
     if not player.is_alive():
         print("player is dead")
+        # PUT UP GAME OVER IMAGE/TILEMAP/Whatever
+        while True:
+            draw_sprite(player_x, player_y, 6)
+            render_text("Game Over. Press [Space] to start a new game")
+            flip()
+            if btn(KEY_SPACE):
+                curMap = 0
+                timeOnMars = 0
+                timeOxygen = 0
+
+                player = Player(1,1)
+                player_x = player._x
+                player_y = player._y
+                scroll_x = 0
+                scroll_y = 0
+
+                face_left = False
+                door = False
+                safe1_visited = False
+                safe2_visited = False
+                safe3_visited = False
+
+                length = 0
+                print_str = ""
+                dialogue = 0
+
+                worm_frame = 0
+                worm_lst = []
+                a_worm = Worm()
+                worm_lst.append(a_worm)
+
+                break
+            flip()
+
 
     #pl = (player_x//8, player_y//8)
     cls(0)
@@ -140,23 +183,25 @@ while True:
     prev_player_y = player_y
 
     # player movement
-    if btn(KEY_RIGHT):
-        move = True
-        player_x = tm.x_scroll(player_x, 1)
-        face_left = False
-    elif btn(KEY_LEFT):
-        move = True
-        player_x = tm.x_scroll(player_x, -1)
-        face_left = True
-    elif btn(KEY_UP):
-        move = True
-        player_y = tm.y_scroll(player_y, -1)
-    elif btn(KEY_DOWN):
-        player_y = tm.y_scroll(player_y, 1)
-        move = True    
+    if player.is_alive():
+        if btn(KEY_RIGHT):
+            move = True
+            player_x = tm.x_scroll(player_x, 1)
+            face_left = False
+        elif btn(KEY_LEFT):
+            move = True
+            player_x = tm.x_scroll(player_x, -1)
+            face_left = True
+        elif btn(KEY_UP):
+            move = True
+            player_y = tm.y_scroll(player_y, -1)
+        elif btn(KEY_DOWN):
+            player_y = tm.y_scroll(player_y, 1)
+            move = True    
 
     player._x = player_x
     player._y = player_y
+
     #knife movement
     if btn(KEY_A) and "knife" in player.tool_names():
         attack = True
@@ -172,7 +217,8 @@ while True:
             safe_num = safe_num + 1
             if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
                 collision = True
-                
+        if (player_x >= 3 and player_x <= 7) and (player_y >= 3 and player_y <= 9):
+            bed_collision = True
         if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
             collision = True
         if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
@@ -201,8 +247,10 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 60 == 59:
-            worm = Worm() # NEED SPECIFY AREA
+        if worm_frame % 60 == 0:
+            print("made")
+            worm = Worm()
+            worm_lst.append(worm) # NEED SPECIFY AREA
         
         # Safehouse encounter collision
         for x, y in safeHouses:
@@ -212,37 +260,27 @@ while True:
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
-        # Initialize worms
-        worm_lst = []
-        for i in range(100):
-            worm = Worm()
-            worm_lst.append(worm)
 
         worm_frame += 1
 
-
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
-            if player.encounter_worm(worm):
-                if attack: #btn(KEY_A)
-                    worm._life = False
-                    worm_lst.remove(worm)
-                else:
-                    print("lost health due to worm")
-                    player._health -= 1
-
-        # Worm movement
-        for worm in worm_lst:
-            if worm_frame % 10 == 0 and worm._life: # worm speed
+            if worm_frame % 20 == 0 and worm._life: # worm speed
                 if worm.close_to_player(player):
+                    print("close")
                     worm.chase(player)
-                    print("chasing")
-                else:
-                    worm.move()
+                    encountered_worm.append(worm)
+            
+        for worm in encountered_worm:
             worm.draw()
-
-        
-
+            met, health = worm.encounter_player(player, face_left, attack)
+            if met:
+                if health == 0:
+                    encountered_worm.remove(worm)
+                    print("killed")
+                else:
+                    player._health += health
+            
 
         # Lose oxygen every 5 seconds while on Mars
         timeOnMars += 1
@@ -250,28 +288,26 @@ while True:
             player._oxygen -= 1
             timeOnMars = 0
         if player._oxygen <= 0:
-            print("lost health due to oxygen")
-            player._health -= 1
-
-
-    if "knife" in player.tool_names():
-        if not attack:
-            if move and player_frame%5 < 3:
-                draw_sprite(player_x,player_y,4)
-            else:
-                draw_sprite(player_x,player_y,3)
-        else:
-            draw_sprite(player_x,player_y,5)
-    else:
-        if move and player_frame%5 < 3:
-            draw_sprite(player_x,player_y, 2)
-        else:
-            draw_sprite(player_x,player_y, 1)
-    
-
-    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
+            if bloodTimer >= 30:
+                player._health -= 1
+                bloodTimer = 0
+                print("lost health due to oxygen")
+            bloodTimer += 1
             
-    if safe_collision == True:
+
+
+    if bed_collision == True:
+        if dialogue == 0:
+            print_str = "Would you like to go to sleep? Y/N"
+        if btnp(KEY_Y):
+            if dialogue <= 1:
+                print_str = "Really? There's no time to sleep now."
+                dialogue = 1
+        if btnp(KEY_N):
+            if dialogue <= 1:
+                print_str = "Good choice."
+                dialogue = 1
+    elif safe_collision == True:
         if safe_num == 1 and safe1_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
@@ -282,7 +318,6 @@ while True:
                 if dialogue == 6:
                     print_str = "Correct. As Baby Ben is a baby, he does lie down."
                     #safe number not thought
-                    print("ss")
                     player._tools.append(knife)
                     safe1_visited = True
                     dialogue = 0
@@ -307,8 +342,47 @@ while True:
                 print_str = "Would you like to open the safe? Y/N"
             if btnp(KEY_Y):
                 if dialogue <= 1:
-                    print_str = "Another riddle awaits."
-                    dialogue = 1
+                    print_str = "Another riddle awaits..."
+                    player._tools.append(key)
+                    dialogue = 2
+                elif dialogue == 6:
+                    print_str = "Dear ----,"
+                    dialogue = 7
+            if btnp(KEY_K):
+                if dialogue == 2:
+                    print_str = "There is a letter as well..."
+                    dialogue = 3
+                elif dialogue == 3:
+                    print_str = "Very clearly worn down from reading, "
+                    dialogue = 4
+                elif dialogue == 4:
+                    print_str = "many words are smudged beyond recognition."
+                    dialogue = 5
+                elif dialogue == 5:
+                    print_str= "Would you like to read? (Y/N)"
+                    dialogue = 6
+                elif dialogue == 7:
+                    print_str = "It’s always hot and dusty. I miss home."
+                    dialogue = 8
+                elif dialogue == 8:
+                    print_str = "I miss Martha and Ben so much."
+                    dialogue = 9
+                elif dialogue == 9:
+                    print_str = "It's a lonesome existence, being the -----."
+                    dialogue = 10
+                elif dialogue == 10:
+                    print_str = "I miss everyone. They are probably all -----."
+                    dialogue = 11
+                elif dialogue == 10:
+                    print_str = "I wonder, sometimes, if it's even ------"
+                    dialogue = 11   
+                elif dialogue == 11:
+                    print_str = "I hope you understand when -----"
+                    dialogue = 12
+                elif dialogue == 12:
+                    print_str = "Sincerely, -----"
+                    dialogue = 13
+                    safe2_visited = True
         elif safe_num == 3 and safe3_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
@@ -316,15 +390,41 @@ while True:
                 if dialogue <= 1:
                     print_str = "Patience child"
                     dialogue = 1
+                    player._tools.append(rations)
+                    player._tools.append(tank)
+                    safe3_visited = True
     else:
         print_str = ""
         dialogue = 0
-        
+
+    # DRAW EVERYTHING
+
+    # Draw player
+    if not player.is_alive():
+        draw_sprite(player_x, player_y, 6)
+    elif "knife" in player.tool_names():
+        if not attack:
+            if move and player_frame%5 < 3:
+                draw_sprite(player_x,player_y,4)
+            else:
+                draw_sprite(player_x,player_y,3)
+        else:
+            draw_sprite(player_x,player_y,5)
+    else:
+        if move and player_frame%5 < 3:
+            draw_sprite(player_x,player_y, 2)
+        else:
+            draw_sprite(player_x,player_y, 1)
+    
+    # Draw UI
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
+    
+    # Draw text
     if print_str != "":
         render_text(print_str)           
 
-    player_frame += 1
 
+    player_frame += 1
     flip()
     
 # Plan for the safe
