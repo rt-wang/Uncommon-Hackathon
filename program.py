@@ -178,10 +178,6 @@ while True:
         else:
             draw_sprite(player_x,player_y, 1)
 
-    if move:
-        draw_sprite(player_x,player_y, 2)
-    else:
-        draw_sprite(player_x,player_y, 1)
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
 
 
