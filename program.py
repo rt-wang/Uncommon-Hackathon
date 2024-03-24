@@ -124,6 +124,15 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
 
 
+
+# Game start screen
+while True:
+    cls(0)
+    blt(0, 12, 2, 0, 32, 256, 256)
+    flip()
+    if btnp(KEY_SPACE):
+        break
+
 # Initialize worms
 worm_frame = 0
 worm_lst = []
