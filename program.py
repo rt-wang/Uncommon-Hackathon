@@ -1,15 +1,23 @@
 from pyxel import *
 from background import *
 from player import Player
+from object import Safe
 from background import Tilemap, sprite
 from object import Worm
-init(256, 256, fps=15)
+
+init(256, 256, fps=6)
 load('astronaut.pyxres')
 
 tm = Tilemap()
-player = Player()
-player_x = player._x
-player_y = player._y
+player = Player(1,1)
+player._tools.append("knife") # temp
+player_x = 1
+player_y = 1
+scroll_x = 0
+scroll_y = 0
+
+face_left = False
+>>>>>>> fb270a71daee88529498ad3ae588cefe12736590
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
@@ -17,21 +25,50 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x, player_y+1, 0,1)
         sprite(player_x+1, player_y, 1,0)
         sprite(player_x+1, player_y+1, 1,1)
-    else:
+    elif frame == 2:
         sprite(player_x, player_y, 2,0)
         sprite(player_x, player_y+1, 2,1)
         sprite(player_x+1, player_y, 3,0)
         sprite(player_x+1, player_y+1, 3,1)
-
-# code for opening safe, only uncomment after object.py is done
-def openSafe(safe, player):
-    for pos in safe_pos: # dont for each position in the safe positions
-        if player.run_into_obj(): # check for collision
-# NEED UPDATE            player.set_tool(safe._tool) # sets the tool that has been picked up from safe
-# NEED UPDATE            text(safe.x, safe.y, safe.text, 7) # displays text where the safe is opened
-            return True
+    elif frame == 3:
+        sprite(player_x, player_y, 2,2)
+        sprite(player_x, player_y+1, 2,3)
+        sprite(player_x+1, player_y, 3,2)
+        sprite(player_x+1, player_y+1, 3,3)
+    elif frame == 4:
+        sprite(player_x, player_y, 4,2)
+        sprite(player_x, player_y+1, 4,3)
+        sprite(player_x+1, player_y, 5,2)
+        sprite(player_x+1, player_y+1, 5,3)
+    elif frame == 5:
+        if face_left:
+            sprite_2(player_x, player_y, 28, 48, flip = False)
         else:
-            return False
+            sprite_2(player_x, player_y, 28, 48, flip = True)
+
+safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
+safe3 = Safe("rations, backpack", 28, 28, "rations")
+
+safes = [safe1, safe2, safe3]
+# code for opening safe, only uncomment after object.py is done
+
+def display_safe(safes, player_x, player_y):        
+    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 150, 10, 0)
+    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Would you like to open the safe? Y/N", 7)
+    show_message = False
+    if btnp(KEY_Y):
+        show_message = True
+
+    if show_message == True:
+        rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 200, 10, 0)
+        text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Not so fast... (Press A)", 7)
+    #   if btnp(KEY_A):
+    #             safe.open_safe()
+    #         else:
+    #             text(10, 20, "Ok. Sad :'(.", 6)    
+    #     else:
+    #         text(10, 20, "Very sad :'(", 5)
 
 # Initialize worms
 worm_lst = []
@@ -51,14 +88,21 @@ while True:
             blt(worm._x, worm._y, 2, 0, 0, 8, 8)
 
     # Worm collide
-    
+
 
 
     move = False
+    attack = False
     px = player_x
     py = player_y
+    collision = False
+    safe_collision = False
     #pl = (player_x//8, player_y//8)
     cls(0)
+    tm.draw(0)
+    
+    prev_player_x = player_x
+    prev_player_y = player_y
 
     # Encounter worm, press F to kill the worm
     for worm in worm_lst:
@@ -71,21 +115,57 @@ while True:
     # player movement
     if btn(KEY_RIGHT):
         move = True
-        player_x = tm.right_scroll(player_x)
+        player_x = tm.x_scroll(player_x, 1)
+        face_left = False
     elif btn(KEY_LEFT):
         move = True
-        player_x = tm.left_scroll(player_x)
+        player_x = tm.x_scroll(player_x, -1)
+        face_left = True
     elif btn(KEY_UP):
-        player_y -= 1
         move = True
+        player_y = tm.y_scroll(player_y, -1)
     elif btn(KEY_DOWN):
-        player_y += 1
+        player_y = tm.y_scroll(player_y, 1)
         move = True
     
+    #knife movement
+    if btn(KEY_A):
+        attack = True
+    for safe in safes:
+        if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
+            safe_collision = True
+        if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
+            collision = True
+            
+    if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
+        collision = True
+    if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
+        if player_x >= 30 and player_y == 15:
+            collision = False
+        else:
+            collision = True
+    
+    if (player_x == 28 or player_x == 29) and (player_y == 13 or player_y == 14 or player_y == 16 or player_y == 17):
+        collision = True
 
-    tm.draw(1)
-    if move:
-        draw_sprite(player_x,player_y, 2)
-    draw_sprite(player_x,player_y, 1)
+    if collision == True:
+        player_x = prev_player_x
+        player_y = prev_player_y
+        move = False
+
+    if "knife" in player._tools:
+        if not attack:
+            draw_sprite(player_x,player_y,3)
+            if move:
+                draw_sprite(player_x,player_y,4)
+        else:
+            draw_sprite(player_x,player_y,5)
+    else:
+        if move:
+            draw_sprite(player_x,player_y, 2)
+        else:
+            draw_sprite(player_x,player_y, 1)
+    if safe_collision == True:
+        display_safe(safes, player_x, player_y)
     flip()
-
+    
