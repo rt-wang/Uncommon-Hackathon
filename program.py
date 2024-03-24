@@ -96,18 +96,11 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
     
-
-
-
-# code for opening safe, only uncomment after object.py is done
-    length = 0
-    print_str = ""
-    dialogue = 0
 # Initialize worms    
-    worm_frame = 0
-    worm_lst = []
-    a_worm = Worm()
-    worm_lst.append(a_worm)
+worm_frame = 0
+worm_lst = []
+a_worm = Worm()
+worm_lst.append(a_worm)
 
 player_frame = 0
 
