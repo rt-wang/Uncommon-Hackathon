@@ -68,7 +68,7 @@ tank = Equipment("tank", 0, 0, 0, 80)
 #test
 # player._tools = [knife, key, rations, tank]
 
-safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51), (26, 35)]
 
 safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -288,7 +288,7 @@ while True:
                             player._health += health
             
             for x,y in safeHouses:
-                if worm._x in range(x-1, x+2) and worm._y in range(y-1, y+2):
+                if x - 1 <= worm._x <= x + 2 and y - 1 <= worm._y <= y + 2:
                     encountered_worm.remove(worm)
             #if (worm._x, worm._y) in safeHouses:
                 
