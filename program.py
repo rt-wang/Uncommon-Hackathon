@@ -97,6 +97,7 @@ while True:
     py = player_y
     collision = False
     safe_collision = False
+    bed_collision = False
     safe_num = 1
 
     # check if player is alive
@@ -145,7 +146,8 @@ while True:
             safe_num = safe_num + 1
             if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
                 collision = True
-                
+        if (player_x >= 3 and player_x <= 7) and (player_y >= 3 and player_y <= 9):
+            bed_collision = True
         if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
             collision = True
         if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
@@ -228,8 +230,18 @@ while True:
     
 
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
-            
-    if safe_collision == True:
+    if bed_collision == True:
+        if dialogue == 0:
+            print_str = "Would you like to go to sleep? Y/N"
+        if btnp(KEY_Y):
+            if dialogue <= 1:
+                print_str = "Really? There's no time to sleep now."
+                dialogue = 1
+        if btnp(KEY_N):
+            if dialogue <= 1:
+                print_str = "Good choice."
+                dialogue = 1
+    elif safe_collision == True:
         if safe_num == 1 and safe1_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
@@ -266,7 +278,9 @@ while True:
             if btnp(KEY_Y):
                 if dialogue <= 1:
                     print_str = "Another riddle awaits."
+                    player._tools.append(key)
                     dialogue = 1
+                    safe2_visited = True
         elif safe_num == 3 and safe3_visited == False:
             if dialogue == 0:
                 print_str = "Would you like to open the safe? Y/N"
@@ -274,6 +288,9 @@ while True:
                 if dialogue <= 1:
                     print_str = "Patience child"
                     dialogue = 1
+                    player._tools.append(rations)
+                    player._tools.append(tank)
+                    safe3_visited = True
     else:
         print_str = ""
         dialogue = 0

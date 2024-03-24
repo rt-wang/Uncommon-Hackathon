@@ -40,6 +40,8 @@ class Player:
             else:
                 if tool._name == "knife":
                     self._tools.append(tool)
+                if tool._name == "key":
+                    self._tools.append(tool)
 
     
     # Check if the player is alive. If so, return True, and False otherwise.
