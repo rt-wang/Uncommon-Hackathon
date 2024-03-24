@@ -43,22 +43,24 @@ def draw_sprite(player_x, player_y, frame):
         else:
             sprite_2(player_x, player_y, 28, 48, flip = True)
 
-knife = Safe("knife", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
-tank = Safe("tank", 25, 9, "awhef") # 25 4 27 5
-letter = Safe("letter", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
-key = Safe("key", 4, 25, "whaeh")
-rations = Safe("rations", 28, 28, "rations")
-backpack = Safe("backpack", 28, 28, "waejf")
+safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
+safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
+safe3 = Safe("rations, backpack", 28, 28, "rations")
 
-safes = [knife, tank, letter, key, rations, backpack]
+safes = [safe1, safe2, safe3]
 # code for opening safe, only uncomment after object.py is done
 
-def displaySafe(safes, player_x, player_y):        
+def display_safe(safes, player_x, player_y):        
     rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 150, 10, 0)
     text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Would you like to open the safe? Y/N", 7)
-    # if btnp(KEY_Y):
-    #         text(10, 20, "Not so fast... First you must solve a riddle. (Press A to continue)", 7)
-    #         if btnp(KEY_A):
+    show_message = False
+    if btnp(KEY_Y):
+        show_message = True
+
+    if show_message == True:
+        rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 200, 10, 0)
+        text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Not so fast... (Press A)", 7)
+    #   if btnp(KEY_A):
     #             safe.open_safe()
     #         else:
     #             text(10, 20, "Ok. Sad :'(.", 6)    
@@ -71,6 +73,7 @@ while True:
     px = player_x
     py = player_y
     collision = False
+    safe_collision = False
     #pl = (player_x//8, player_y//8)
     cls(0)
     tm.draw(0)
@@ -98,8 +101,11 @@ while True:
     if btn(KEY_A):
         attack = True
     for safe in safes:
+        if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
+            safe_collision = True
         if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
             collision = True
+            
     if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
         collision = True
     if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
@@ -128,6 +134,11 @@ while True:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
+<<<<<<< HEAD
     #open_safe(safes, player_x, player_y)
+=======
+    if safe_collision == True:
+        display_safe(safes, player_x, player_y)
+>>>>>>> 04934b53800e4211c3e222d5fd91329caf18e381
     flip()
-
+    

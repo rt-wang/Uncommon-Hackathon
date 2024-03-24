@@ -50,7 +50,11 @@ class Safe:
             return True
         else:
             return False
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 04934b53800e4211c3e222d5fd91329caf18e381
     def set_life(self, is_alive):
         self._life = is_alive
 
