@@ -17,29 +17,28 @@ scroll_x = 0
 scroll_y = 0
 
 face_left = False
->>>>>>> fb270a71daee88529498ad3ae588cefe12736590
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
-        sprite(player_x, player_y, 0,0)
-        sprite(player_x, player_y+1, 0,1)
+        sprite(player_x, player_y, 0,0, flip=face_left)
+        '''sprite(player_x, player_y+1, 0,1)
         sprite(player_x+1, player_y, 1,0)
-        sprite(player_x+1, player_y+1, 1,1)
+        sprite(player_x+1, player_y+1, 1,1)'''
     elif frame == 2:
-        sprite(player_x, player_y, 2,0)
-        sprite(player_x, player_y+1, 2,1)
+        sprite(player_x, player_y, 2,0, flip=face_left)
+        '''sprite(player_x, player_y+1, 2,1)
         sprite(player_x+1, player_y, 3,0)
-        sprite(player_x+1, player_y+1, 3,1)
+        sprite(player_x+1, player_y+1, 3,1)'''
     elif frame == 3:
-        sprite(player_x, player_y, 2,2)
-        sprite(player_x, player_y+1, 2,3)
+        sprite(player_x, player_y, 2,2, flip=face_left)
+        '''sprite(player_x, player_y+1, 2,3)
         sprite(player_x+1, player_y, 3,2)
-        sprite(player_x+1, player_y+1, 3,3)
+        sprite(player_x+1, player_y+1, 3,3)'''
     elif frame == 4:
-        sprite(player_x, player_y, 4,2)
-        sprite(player_x, player_y+1, 4,3)
+        sprite(player_x, player_y, 4,2, flip=face_left)
+        '''sprite(player_x, player_y+1, 4,3)
         sprite(player_x+1, player_y, 5,2)
-        sprite(player_x+1, player_y+1, 5,3)
+        sprite(player_x+1, player_y+1, 5,3)'''
     elif frame == 5:
         if face_left:
             sprite_2(player_x, player_y, 28, 48, flip = False)
