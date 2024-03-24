@@ -283,14 +283,15 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    if not safe:
-                        player._health += health
-            if (worm._x, worm._y) in safeHouses:
-                    if worm_frame % 5 == 0:
+                    if worm_frame % 10 == 0:
                         if not safe:
                             player._health += health
-            if (worm._x and worm._y) in safeHouses:
-                encountered_worm.remove(worm)
+            
+            for x,y in safeHouses:
+                if worm._x in range(x-1, x+2) and worm._y in range(y-1, y+2):
+                    encountered_worm.remove(worm)
+            #if (worm._x, worm._y) in safeHouses:
+                
             
 
         # Lose oxygen every 5 seconds while on Mars
