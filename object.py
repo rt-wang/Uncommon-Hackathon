@@ -3,10 +3,12 @@ import math, random
 
 class Equipment:
 
-    def __init__(self, name, x, y) -> None:
+    def __init__(self, name, x, y, u=0, v=0) -> None:
         self._name = name # string specify the name of the tool
         self._x = x
         self._y = y
+        self.u = u 
+        self.v = v
 
 class Worm:
     def __init__(self, x = random.randint(0, 256), y = random.randint(0, 256), life = True) -> None:

@@ -2,10 +2,11 @@ from pyxel import *
 from background import *
 from player import Player
 from object import Safe
+from object import Equipment
 from background import Tilemap, sprite
 from object import Worm
 
-init(256, 256, fps=6)
+init(256, 256, fps=15)
 load('astronaut.pyxres')
 
 tm = Tilemap()
@@ -17,34 +18,41 @@ scroll_x = 0
 scroll_y = 0
 
 face_left = False
-#>>>>>>> fb270a71daee88529498ad3ae588cefe12736590
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
-        sprite(player_x, player_y, 0,0)
-        sprite(player_x, player_y+1, 0,1)
+        sprite(player_x, player_y, 0,0, flip=face_left)
+        '''sprite(player_x, player_y+1, 0,1)
         sprite(player_x+1, player_y, 1,0)
-        sprite(player_x+1, player_y+1, 1,1)
+        sprite(player_x+1, player_y+1, 1,1)'''
     elif frame == 2:
-        sprite(player_x, player_y, 2,0)
-        sprite(player_x, player_y+1, 2,1)
+        sprite(player_x, player_y, 2,0, flip=face_left)
+        '''sprite(player_x, player_y+1, 2,1)
         sprite(player_x+1, player_y, 3,0)
-        sprite(player_x+1, player_y+1, 3,1)
+        sprite(player_x+1, player_y+1, 3,1)'''
     elif frame == 3:
-        sprite(player_x, player_y, 2,2)
-        sprite(player_x, player_y+1, 2,3)
+        sprite(player_x, player_y, 2,2, flip=face_left)
+        '''sprite(player_x, player_y+1, 2,3)
         sprite(player_x+1, player_y, 3,2)
-        sprite(player_x+1, player_y+1, 3,3)
+        sprite(player_x+1, player_y+1, 3,3)'''
     elif frame == 4:
-        sprite(player_x, player_y, 4,2)
-        sprite(player_x, player_y+1, 4,3)
+        sprite(player_x, player_y, 4,2, flip=face_left)
+        '''sprite(player_x, player_y+1, 4,3)
         sprite(player_x+1, player_y, 5,2)
-        sprite(player_x+1, player_y+1, 5,3)
+        sprite(player_x+1, player_y+1, 5,3)'''
     elif frame == 5:
         if face_left:
             sprite_2(player_x, player_y, 28, 48, flip = False)
         else:
             sprite_2(player_x, player_y, 28, 48, flip = True)
+
+knife = Equipment("knife", 0, 0, 0, 88)
+key = Equipment("key", 0, 0, 8, 88)
+rations = Equipment("rations", 0, 0, 8, 80)
+
+#test
+player._tools = [knife, key, rations]
+
 
 safe1 = Safe("knife, tank", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("letter, key", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -69,6 +77,26 @@ def display_safe(safes, player_x, player_y):
     #             text(10, 20, "Ok. Sad :'(.", 6)    
     #     else:
     #         text(10, 20, "Very sad :'(", 5)
+
+def displayUI(scroll_x, scroll_y, size, health, oxygen):
+    # backdrop
+    # for i in range(0, 7):
+    #     for j in range(0, 4):
+    #         blt((scroll_x + 31-i)*size, (scroll_y + j)*size, 0, 8, 24, 8, 8)
+
+    # health
+    for i in range(0, health):
+        blt((scroll_x + 30-i)*size, (scroll_y + 1) *size, 0, 8, 32, 8, 8)
+    
+    #oxygen
+    for i in range(0, oxygen):
+        blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8)
+    
+    # inventory
+    for i in range(len(player._tools)):
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8)
+
+
 
 # Initialize worms
 worm_lst = []
@@ -149,12 +177,14 @@ while True:
         else:
             draw_sprite(player_x,player_y,5)
     else:
-        if move:
-            draw_sprite(player_x,player_y, 2)
-        else:
-            draw_sprite(player_x,player_y, 1)
-    if safe_collision == True:
-        display_safe(safes, player_x, player_y)
+        draw_sprite(player_x,player_y, 1)
+
+    display_safe(safes, player_x, player_y)
+    if move:
+        draw_sprite(player_x,player_y, 2)
+    else:
+        draw_sprite(player_x,player_y, 1)
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
 
 
     # Worm movement
