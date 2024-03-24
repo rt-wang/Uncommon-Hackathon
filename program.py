@@ -9,6 +9,15 @@ from object import Worm
 init(256, 256, fps=15)
 load('astronaut.pyxres')
 
+
+#test
+#from PIL import Image
+#img = Image.open("game_over.jpg")
+#img = Image.load(game_over.jpg)
+
+#img.show()
+
+
 tm = Tilemap()
 curMap = 0
 timeOnMars = 0
@@ -47,9 +56,9 @@ def draw_sprite(player_x, player_y, frame):
     
     elif frame == 6:
         if face_left:
-            sprite_2(player_x, player_y, 32, 80, flip = False)
+            sprite(player_x, player_y, 4, 10, flip = False)
         else:
-            sprite_2(player_x, player_y, 32, 80, flip = True)
+            sprite(player_x, player_y, 4, 10, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -110,7 +119,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-
 player_frame = 0
 
 while True:
@@ -122,6 +130,7 @@ while True:
     safe_collision = False
     bed_collision = False
     safe_num = 1
+    safe = False
 
 
     # check if player is alive
@@ -238,7 +247,7 @@ while True:
             move = False
 
         # Increase a worm every 4 sec
-        if worm_frame % 60 == 0:
+        if worm_frame % 30 == 0:
             print("made")
             worm = Worm()
             worm_lst.append(worm) # NEED SPECIFY AREA
@@ -246,8 +255,9 @@ while True:
         # Safehouse encounter collision
         for x, y in safeHouses:
             if player_x == x and player_y == y:
+                safe = True
                 if timeOxygen >= 15:
-                    player._oxygen += 1
+                    player._oxygen = min(8, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
@@ -256,7 +266,7 @@ while True:
 
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
-            if worm_frame % 20 == 0 and worm._life: # worm speed
+            if worm_frame % 7 == 0 and worm._life: # worm speed
                 if worm.close_to_player(player):
                     print("close")
                     worm.chase(player)
@@ -268,9 +278,11 @@ while True:
             if met:
                 if health == 0:
                     encountered_worm.remove(worm)
+                    attack = False
                     print("killed")
                 else:
-                    player._health += health
+                    if not safe:
+                        player._health += health
             
 
         # Lose oxygen every 5 seconds while on Mars
@@ -431,4 +443,3 @@ while True:
             c. for letter, using item means reading it
             d. for rations, using item means eating it (so its gone)
 '''
-
