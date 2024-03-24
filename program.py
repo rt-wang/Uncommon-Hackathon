@@ -89,6 +89,7 @@ for i in range(100):
     worm_lst.append(worm)
 
 worm_frame = 0
+player_frame = 0
 
 
 while True:
@@ -181,14 +182,14 @@ while True:
     if knife in player._tools:
         print("done")
         if not attack:
-            if move:
+            if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)
             else:
                 draw_sprite(player_x,player_y,3)
         else:
             draw_sprite(player_x,player_y,5)
     else:
-        if move:
+        if move and player_frame%5 < 3:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
@@ -244,6 +245,7 @@ while True:
         blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
 
     worm_frame += 1
+    player_frame += 1
 
     flip()
     
