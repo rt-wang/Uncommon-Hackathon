@@ -98,16 +98,13 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
     
 
 
-<<<<<<< HEAD
 # Initialize worms
 worm_frame = 0
 worm_lst = []
 a_worm = Worm()
 worm_lst.append(a_worm)
 
-=======
 player_frame = 0
->>>>>>> ae535db57e0e0a1374278aa52fd8a316faa567ba
 
 while True:
     move = False
@@ -193,12 +190,10 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
-<<<<<<< HEAD
 
         # Increase a worm every 4 sec
         if worm_frame % 60 == 59:
             worm = Worm() # NEED SPECIFY AREA
-=======
         
         # Safehouse encounter collision
         for x, y in safeHouses:
@@ -212,7 +207,6 @@ while True:
         worm_lst = []
         for i in range(100):
             worm = Worm()
->>>>>>> ae535db57e0e0a1374278aa52fd8a316faa567ba
             worm_lst.append(worm)
 
         worm_frame += 1
