@@ -67,14 +67,8 @@ class Safe:
         self._y = y
         self._text = text
 
-    def open_safe(self) -> bool:
-        text(self._x, self._y, "Would you like to open the safe?", 2)
-        if btnp(KEY_Y):
-            text(self._x, self._y, "correct", 8)
-            return True
-        else:
-            return False
-        
+    # def open_safe(self) -> bool:
+       
     def set_life(self, is_alive):
         self._life = is_alive
 
