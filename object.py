@@ -21,7 +21,7 @@ class Worm:
         self._y += y_change
 
     def close_to_player(self, player) -> bool:
-        if math.sqrt((self._x - player._x) ** 2 + (self._y - player._y) ** 2) < 6:
+        if math.sqrt((self._x - player._x) ** 2 + (self._y - player._y) ** 2) < 10:
             return True
         return False
     
@@ -33,19 +33,18 @@ class Worm:
         a, b = (random.randint(0, 1), random.randint(0, 1))
         if a == 0:
             if b == 0:
-                self.move_change_loc(0, -1)
+                self.move_change_loc(0, 3)
             else:
-                self.move_change_loc(0, 1)
+                self.move_change_loc(0, 3)
         else:
             if b == 0:
-                self.move_change_loc(-1, 0)
+                self.move_change_loc(3, 0)
             else:
-                self.move_change_loc(1, 0)
+                self.move_change_loc(3, 0)
 
     
     def chase(self, player):
         if self.close_to_player(player):
-            #self._chase = True
             if self._x > player._x:
                 self._x -= 1
             elif self._x < player._x:
@@ -54,7 +53,6 @@ class Worm:
                 self._y -= 1
             elif self._y < player._y:
                 self._y += 1
-            self.move_change_loc(b)
 
 
 class Safe: 

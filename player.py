@@ -8,6 +8,7 @@ class Player:
         health[int]: 0 is death, and higher value coresponds to more health.
         oxygen[int]
         food[int]
+        tools[List]: a list of Equipment objects
         """
         self._x = x
         self._y = y

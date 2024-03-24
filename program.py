@@ -10,14 +10,14 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 player = Player(1,1)
-player._tools.append("knife") # temp
+#player._tools.append("knife") # temp
 player_x = 1
 player_y = 1
 scroll_x = 0
 scroll_y = 0
 
 face_left = False
->>>>>>> fb270a71daee88529498ad3ae588cefe12736590
+#>>>>>>> fb270a71daee88529498ad3ae588cefe12736590
 
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
@@ -72,25 +72,12 @@ def display_safe(safes, player_x, player_y):
 
 # Initialize worms
 worm_lst = []
-for i in range(5):
+for i in range(100):
     worm = Worm()
     worm_lst.append(worm)
 
 
 while True:
-    # Worm movement
-    for worm in worm_lst:
-        if not worm._chase:
-            worm.move()
-        else:
-            worm.chase()
-        if worm._life:
-            blt(worm._x, worm._y, 2, 0, 0, 8, 8)
-
-    # Worm collide
-
-
-
     move = False
     attack = False
     px = player_x
@@ -109,6 +96,7 @@ while True:
         if player.encounter_worm(worm):
             if btn(KEY_F):
                 worm._life = False
+                worm_lst.remove(worm)
             else:
                 player._health -= 1
 
@@ -153,7 +141,7 @@ while True:
         player_y = prev_player_y
         move = False
 
-    if "knife" in player._tools:
+    if "knife" in player.tool_names():
         if not attack:
             draw_sprite(player_x,player_y,3)
             if move:
@@ -167,5 +155,16 @@ while True:
             draw_sprite(player_x,player_y, 1)
     if safe_collision == True:
         display_safe(safes, player_x, player_y)
+
+
+    # Worm movement
+    for worm in worm_lst:
+        if not worm._chase:
+            worm.move()
+        else:
+            worm.chase()
+        if worm._life:
+            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+
     flip()
     
