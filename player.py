@@ -3,11 +3,12 @@ from object import Equipment, Worm
 
 class Player:
 
-    def __init__(self, x, y, health = 3, oxygen = True, food = True) -> None:
+    def __init__(self, x = 0, y = 0, health = 3, oxygen = True, food = True) -> None:
         """
         health[int]: 0 is death, and higher value coresponds to more health.
         oxygen[int]
         food[int]
+        tools[List]: a list of Equipment objects
         """
         self._x = x
         self._y = y
@@ -60,12 +61,10 @@ class Player:
             return True
         return False
 
+    
     # Encounter a worm
     def encounter_worm(self, worm):
-        if not self.run_into_obj(worm):
-            return
-        if "knife" in self.tool_names():
-    # press key
-            worm.set_life(False)
-        else:
-            self._health -= 1
+        if self.run_into_obj(worm):
+            return True
+        return False
+    
