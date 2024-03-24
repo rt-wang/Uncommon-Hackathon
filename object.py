@@ -12,18 +12,18 @@ class Equipment:
 
 class Worm:
     def __init__(self, x = 0, y = 0, life = True) -> None:
-        self._x = random.randint(0, 256)
-        self._y = random.randint(0, 256)
+        self._x = random.randint(200, 256)
+        self._y = random.randint(200, 256)
         self._life = life
         self._chase = False # If chase, run chase() and stop move(); otherwise, run move()
-
     
     def move_change_loc(self, x_change, y_change):
         self._x += x_change
         self._y += y_change
 
     def close_to_player(self, player) -> bool:
-        if math.sqrt((self._x - player._x) ** 2 + (self._y - player._y) ** 2) < 10:
+        if (self._x - player._x) < 200 or (self._y - player._y) < 200:
+            print(True)
             return True
         return False
     
@@ -49,16 +49,14 @@ class Worm:
 
     
     def chase(self, player):
-        if self.close_to_player(player):
-            self._chase = True
-            if self._x > player._x:
-                self._x -= 1
-            elif self._x < player._x:
-                self._x += 1
-            if self._y > player._y:
-                self._y -= 1
-            elif self._y < player._y:
-                self._y += 1
+        if self._x > player._x:
+            self._x -= 5
+        elif self._x < player._x:
+            self._x += 5
+        if self._y > player._y:
+            self._y -= 5
+        elif self._y < player._y:
+            self._y += 5
 
 
 class Safe: 

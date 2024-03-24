@@ -11,11 +11,12 @@ load('astronaut.pyxres')
 
 tm = Tilemap()
 curMap = 0
-stepsOnMars = 0
+timeOnMars = 0
+timeOxygen = 0
 
 player = Player(1,1)
-player_x = 1
-player_y = 1
+player_x = player._x
+player_y = player._y
 scroll_x = 0
 scroll_y = 0
 
@@ -47,8 +48,9 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-#player._tools = [knife, key, rations, tank]
+player._tools = [knife, key, rations, tank]
 
+safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
 safe1 = Safe("safe1", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 safe2 = Safe("safe2", 4, 25, "awejfio") # 9 26 11 28 # letter is just a read object
@@ -84,9 +86,23 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
+    # (0, 128)
+    for i in range(0, 3):
+        blt((scroll_x+31)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, -8, 8, colkey=3)
+        blt((scroll_x + 31 - len(player._tools) - 1)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, 8, 8, colkey=3)
     for i in range(len(player._tools)):
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, 8, 136, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 29)*size, 0, 8, 128, 8, 8, colkey=3)
+        blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
+    
 
+
+# Initialize worms
+worm_frame = 0
+worm_lst = []
+a_worm = Worm()
+worm_lst.append(a_worm)
 
 player_frame = 0
 
@@ -131,8 +147,10 @@ while True:
         player_y = tm.y_scroll(player_y, 1)
         move = True    
 
+    player._x = player_x
+    player._y = player_y
     #knife movement
-    if btn(KEY_A):
+    if btn(KEY_A) and "knife" in player.tool_names():
         attack = True
 
     # room collision
@@ -166,7 +184,7 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
-    else:
+    else: # in Mars
         if player_x < 0 or player_y < 0 or player_x >= 63 or player_y >= 63: 
             collision = True
 
@@ -174,47 +192,62 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
+
+        # Increase a worm every 4 sec
+        if worm_frame % 60 == 59:
+            worm = Worm() # NEED SPECIFY AREA
+        
+        # Safehouse encounter collision
+        for x, y in safeHouses:
+            if player_x == x and player_y == y:
+                if timeOxygen >= 15:
+                    player._oxygen += 1
+                    timeOxygen = 0
+                else:
+                    timeOxygen += 1
         # Initialize worms
         worm_lst = []
         for i in range(100):
             worm = Worm()
             worm_lst.append(worm)
 
-        worm_frame = 0
+        worm_frame += 1
 
-        # Encounter worm, press F to kill the worm
+
+        # Encounter worm, press A to kill the worm
         for worm in worm_lst:
             if player.encounter_worm(worm):
-                if btn(KEY_F):
+                if attack: #btn(KEY_A)
                     worm._life = False
                     worm_lst.remove(worm)
                 else:
+                    print("lost health due to worm")
                     player._health -= 1
-                    pass
 
         # Worm movement
         for worm in worm_lst:
-            if not worm._chase and worm_frame%5 == 0:
-                worm.move()
-            else:
-                worm.chase(player)
-            if worm._life:
-                worm.draw()
+            if worm_frame % 10 == 0 and worm._life: # worm speed
+                if worm.close_to_player(player):
+                    worm.chase(player)
+                    print("chasing")
+                else:
+                    worm.move()
+            worm.draw()
 
-        worm.chase(player)
-        if worm._life:
-            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+        
 
-        worm_frame += 1
-        if move:
-                stepsOnMars += 1
-                if stepsOnMars >= 15:
-                    player._oxygen -= 1
-                    stepsOnMars = 0
-                if player._oxygen <= 0:
-                    player._health -= 1
 
-    if knife in player._tools:
+        # Lose oxygen every 5 seconds while on Mars
+        timeOnMars += 1
+        if timeOnMars >= 75:
+            player._oxygen -= 1
+            timeOnMars = 0
+        if player._oxygen <= 0:
+            print("lost health due to oxygen")
+            player._health -= 1
+
+
+    if "knife" in player.tool_names():
         if not attack:
             if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)

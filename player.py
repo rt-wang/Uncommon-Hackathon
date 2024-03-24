@@ -46,7 +46,7 @@ class Player:
     
     # Check if the player is alive. If so, return True, and False otherwise.
     def is_alive(self) -> bool:
-        if self._health > 0:
+        if self._health > 0 and self._oxygen > 0:
             return True
         else:
             return False
@@ -66,7 +66,5 @@ class Player:
     
     # Encounter a worm
     def encounter_worm(self, worm):
-        if self.run_into_obj(worm):
-            return True
-        return False
+        return self.run_into_obj(worm)
     
