@@ -62,8 +62,11 @@ class Tilemap:
         return player_x
 '''
 
-def sprite(x, y, n, m, size=8, colkey=3):
-    blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
+def sprite(x, y, n, m, size=8, colkey=3, flip = False):
+    if not flip:
+        blt(x * size, y * size, 0, n * size, m * size, -size*2, size*2, colkey) # redraws sprite at new location
+    else:
+        blt(x * size, y * size, 0, n * size, m * size, size*2, size*2, colkey) # redraws sprite at new location
 
 def sprite_2(x, y, n, m, size = 8, colkey=3, flip = False):
     if not flip:
