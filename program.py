@@ -24,24 +24,16 @@ face_left = False
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
         sprite(player_x, player_y, 0,0, flip=face_left)
-        '''sprite(player_x, player_y+1, 0,1)
-        sprite(player_x+1, player_y, 1,0)
-        sprite(player_x+1, player_y+1, 1,1)'''
+        
     elif frame == 2:
         sprite(player_x, player_y, 2,0, flip=face_left)
-        '''sprite(player_x, player_y+1, 2,1)
-        sprite(player_x+1, player_y, 3,0)
-        sprite(player_x+1, player_y+1, 3,1)'''
+        
     elif frame == 3:
         sprite(player_x, player_y, 2,2, flip=face_left)
-        '''sprite(player_x, player_y+1, 2,3)
-        sprite(player_x+1, player_y, 3,2)
-        sprite(player_x+1, player_y+1, 3,3)'''
+        
     elif frame == 4:
         sprite(player_x, player_y, 4,2, flip=face_left)
-        '''sprite(player_x, player_y+1, 4,3)
-        sprite(player_x+1, player_y, 5,2)
-        sprite(player_x+1, player_y+1, 5,3)'''
+        
     elif frame == 5:
         if face_left:
             sprite_2(player_x, player_y, 28, 48, flip = False)
@@ -137,6 +129,7 @@ while True:
         player_y = tm.y_scroll(player_y, 1)
         move = True
     
+    
     #knife movement
     if btn(KEY_A):
         attack = True
@@ -164,7 +157,7 @@ while True:
         player_y = prev_player_y
         move = False
 
-    if knife in player.tool_names():
+    if "knife" in player.tool_names():
         if not attack:
             draw_sprite(player_x,player_y,3)
             if move:
@@ -172,7 +165,10 @@ while True:
         else:
             draw_sprite(player_x,player_y,5)
     else:
-        draw_sprite(player_x,player_y, 1)
+        if move:
+            draw_sprite(player_x,player_y, 2)
+        else:
+            draw_sprite(player_x,player_y, 1)
 
     if move:
         draw_sprite(player_x,player_y, 2)
