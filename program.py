@@ -70,9 +70,9 @@ key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
-nail = Equipment("nail", 0, 14)
-oil = Equipment("oil", 40, 0)
-wood = Equipment("wood", 55, 0)
+nail = Equipment("nail", 0, 14, 8, 96)
+oil = Equipment("oil", 40, 0, 0, 96)
+wood = Equipment("wood", 55, 0, 0, 104)
 
 
 #test
@@ -114,7 +114,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
-    # (0, 128)
     for i in range(0, 3):
         blt((scroll_x+31)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, -8, 8, colkey=3)
         blt((scroll_x + 31 - len(player._tools) - 1)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, 8, 8, colkey=3)
@@ -124,6 +123,15 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
 
+
+
+# Game start screen
+while True:
+    cls(0)
+    blt(0, 12, 2, 0, 32, 256, 256)
+    flip()
+    if btnp(KEY_SPACE):
+        break
 
 # Initialize worms
 worm_frame = 0
