@@ -70,9 +70,9 @@ key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
-nail = Equipment("nail", 0, 14)
-oil = Equipment("oil", 40, 0)
-wood = Equipment("wood", 55, 0)
+nail = Equipment("nail", 0, 14, 8, 96)
+oil = Equipment("oil", 40, 0, 0, 96)
+wood = Equipment("wood", 55, 0, 0, 104)
 
 
 #test
