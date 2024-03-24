@@ -41,6 +41,12 @@ def draw_sprite(player_x, player_y, frame):
             sprite_2(player_x, player_y, 28, 48, flip = False)
         else:
             sprite_2(player_x, player_y, 28, 48, flip = True)
+    
+    elif frame == 6:
+        if face_left:
+            sprite_2(player_x, player_y, 32, 80, flip = False)
+        else:
+            sprite_2(player_x, player_y, 32, 80, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -119,6 +125,7 @@ while True:
         print("player is dead")
         # PUT UP GAME OVER IMAGE/TILEMAP/Whatever
         while True:
+            draw_sprite(player_x, player_y, 6)
             if btn(KEY_SPACE):
                 curMap = 0
                 timeOnMars = 0
@@ -146,6 +153,7 @@ while True:
                 worm_lst.append(a_worm)
 
                 break
+            flip()
 
 
     #pl = (player_x//8, player_y//8)
@@ -160,20 +168,21 @@ while True:
     prev_player_y = player_y
 
     # player movement
-    if btn(KEY_RIGHT):
-        move = True
-        player_x = tm.x_scroll(player_x, 1)
-        face_left = False
-    elif btn(KEY_LEFT):
-        move = True
-        player_x = tm.x_scroll(player_x, -1)
-        face_left = True
-    elif btn(KEY_UP):
-        move = True
-        player_y = tm.y_scroll(player_y, -1)
-    elif btn(KEY_DOWN):
-        player_y = tm.y_scroll(player_y, 1)
-        move = True    
+    if player.is_alive():
+        if btn(KEY_RIGHT):
+            move = True
+            player_x = tm.x_scroll(player_x, 1)
+            face_left = False
+        elif btn(KEY_LEFT):
+            move = True
+            player_x = tm.x_scroll(player_x, -1)
+            face_left = True
+        elif btn(KEY_UP):
+            move = True
+            player_y = tm.y_scroll(player_y, -1)
+        elif btn(KEY_DOWN):
+            player_y = tm.y_scroll(player_y, 1)
+            move = True    
 
     player._x = player_x
     player._y = player_y
@@ -261,9 +270,7 @@ while True:
                 else:
                     worm.move()
             worm.draw()
-
         
-
 
         # Lose oxygen every 5 seconds while on Mars
         timeOnMars += 1
@@ -275,22 +282,6 @@ while True:
             player._health -= 1
 
 
-    if "knife" in player.tool_names():
-        if not attack:
-            if move and player_frame%5 < 3:
-                draw_sprite(player_x,player_y,4)
-            else:
-                draw_sprite(player_x,player_y,3)
-        else:
-            draw_sprite(player_x,player_y,5)
-    else:
-        if move and player_frame%5 < 3:
-            draw_sprite(player_x,player_y, 2)
-        else:
-            draw_sprite(player_x,player_y, 1)
-    
-
-    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
     if bed_collision == True:
         if dialogue == 0:
             print_str = "Would you like to go to sleep? Y/N"
@@ -355,12 +346,35 @@ while True:
     else:
         print_str = ""
         dialogue = 0
-        
+
+    # DRAW EVERYTHING
+
+    # Draw player
+    if not player.is_alive():
+        draw_sprite(player_x, player_y, 6)
+    elif "knife" in player.tool_names():
+        if not attack:
+            if move and player_frame%5 < 3:
+                draw_sprite(player_x,player_y,4)
+            else:
+                draw_sprite(player_x,player_y,3)
+        else:
+            draw_sprite(player_x,player_y,5)
+    else:
+        if move and player_frame%5 < 3:
+            draw_sprite(player_x,player_y, 2)
+        else:
+            draw_sprite(player_x,player_y, 1)
+    
+    # Draw UI
+    displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, player._oxygen)
+    
+    # Draw text
     if print_str != "":
         render_text(print_str)           
 
-    player_frame += 1
 
+    player_frame += 1
     flip()
     
 # Plan for the safe
