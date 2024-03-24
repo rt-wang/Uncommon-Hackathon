@@ -56,9 +56,9 @@ def draw_sprite(player_x, player_y, frame):
     
     elif frame == 6:
         if face_left:
-            sprite_2(player_x, player_y, 32, 80, flip = False)
+            sprite(player_x, player_y, 4, 10, flip = False)
         else:
-            sprite_2(player_x, player_y, 32, 80, flip = True)
+            sprite(player_x, player_y, 4, 10, flip = True)
 
 knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
@@ -256,7 +256,7 @@ while True:
         for x, y in safeHouses:
             if player_x == x and player_y == y:
                 if timeOxygen >= 15:
-                    player._oxygen += 1
+                    player._oxygen = max(8, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
