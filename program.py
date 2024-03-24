@@ -13,6 +13,7 @@ tm = Tilemap()
 curMap = 0
 timeOnMars = 0
 timeOxygen = 0
+bloodTimer = 0
 
 player = Player(1,1)
 player_x = player._x
@@ -126,6 +127,8 @@ while True:
         # PUT UP GAME OVER IMAGE/TILEMAP/Whatever
         while True:
             draw_sprite(player_x, player_y, 6)
+            render_text("Game Over. Press [Space] to start a new game")
+            flip()
             if btn(KEY_SPACE):
                 curMap = 0
                 timeOnMars = 0
@@ -278,8 +281,12 @@ while True:
             player._oxygen -= 1
             timeOnMars = 0
         if player._oxygen <= 0:
-            print("lost health due to oxygen")
-            player._health -= 1
+            if bloodTimer >= 30:
+                player._health -= 1
+                bloodTimer = 0
+                print("lost health due to oxygen")
+            bloodTimer += 1
+            
 
 
     if bed_collision == True:
