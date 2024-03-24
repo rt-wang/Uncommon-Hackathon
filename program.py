@@ -281,8 +281,9 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    if not safe:
-                        player._health += health
+                    if worm_frame % 5 == 0:
+                        if not safe:
+                            player._health += health
             if (worm._x and worm._y) in safeHouses:
                 encountered_worm.remove(worm)
             
