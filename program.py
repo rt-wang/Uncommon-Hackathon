@@ -48,7 +48,7 @@ rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
 
 #test
-player._tools = [knife, key, rations, tank]
+# player._tools = [knife, key, rations, tank]
 
 safeHouses = [(4,2), (28, 4), (49, 4), (50, 19), (26, 19), (2, 19), (3, 43), (43, 15), (61, 51)]
 
@@ -68,8 +68,8 @@ print_str = ""
 dialogue = 0
 
 def render_text(str):
-    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 180 + tm.scroll_x, 10, 0)
-    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, str, 7)
+    rect(19 + tm.scroll_x * 8, 28 + tm.scroll_y * 8, 200 + tm.scroll_x, 10, 0)
+    text(20 + tm.scroll_x * 8, 30 + tm.scroll_y * 8, str, 7)
 
 def displayUI(scroll_x, scroll_y, size, health, oxygen):
     # backdrop
@@ -310,9 +310,46 @@ while True:
                 print_str = "Would you like to open the safe? Y/N"
             if btnp(KEY_Y):
                 if dialogue <= 1:
-                    print_str = "Another riddle awaits."
+                    print_str = "Another riddle awaits..."
                     player._tools.append(key)
-                    dialogue = 1
+                    dialogue = 2
+                elif dialogue == 6:
+                    print_str = "Dear ----,"
+                    dialogue = 7
+            if btnp(KEY_K):
+                if dialogue == 2:
+                    print_str = "There is a letter as well..."
+                    dialogue = 3
+                elif dialogue == 3:
+                    print_str = "Very clearly worn down from reading, "
+                    dialogue = 4
+                elif dialogue == 4:
+                    print_str = "many words are smudged beyond recognition."
+                    dialogue = 5
+                elif dialogue == 5:
+                    print_str= "Would you like to read? (Y/N)"
+                    dialogue = 6
+                elif dialogue == 7:
+                    print_str = "It’s always hot and dusty. I miss home."
+                    dialogue = 8
+                elif dialogue == 8:
+                    print_str = "I miss Martha and Baby Ben, just a month old."
+                    dialogue = 9
+                elif dialogue == 9:
+                    print_str = "It's a lonesome existence, being the -----."
+                    dialogue = 10
+                elif dialogue == 10:
+                    print_str = "I miss everyone. They are probably all -----."
+                    dialogue = 11
+                elif dialogue == 10:
+                    print_str = "I wonder, sometimes, if it's even ------"
+                    dialogue = 11   
+                elif dialogue == 11:
+                    print_str = "I hope you understand when -----"
+                    dialogue = 12
+                elif dialogue == 12:
+                    print_str = "Sincerely, -----"
+                    dialogue = 13
                     safe2_visited = True
         elif safe_num == 3 and safe3_visited == False:
             if dialogue == 0:
