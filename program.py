@@ -194,7 +194,7 @@ while True:
         if not worm._chase:
             worm.move()
         else:
-            worm.chase()
+            worm.chase(player)
         if worm._life:
             blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
 
