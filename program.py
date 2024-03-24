@@ -119,7 +119,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 # Initialize worms
 worm_frame = 0
 worm_lst = []
-
 player_frame = 0
 
 while True:
@@ -131,6 +130,7 @@ while True:
     safe_collision = False
     bed_collision = False
     safe_num = 1
+    safe = False
 
 
     # check if player is alive
@@ -255,8 +255,9 @@ while True:
         # Safehouse encounter collision
         for x, y in safeHouses:
             if player_x == x and player_y == y:
+                safe = True
                 if timeOxygen >= 15:
-                    player._oxygen = max(8, player._oxygen+1)
+                    player._oxygen = min(8, player._oxygen+1)
                     timeOxygen = 0
                 else:
                     timeOxygen += 1
@@ -280,7 +281,8 @@ while True:
                     attack = False
                     print("killed")
                 else:
-                    player._health += health
+                    if not safe:
+                        player._health += health
             
 
         # Lose oxygen every 5 seconds while on Mars
