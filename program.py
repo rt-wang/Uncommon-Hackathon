@@ -82,14 +82,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 
 
 
-# Initialize worms
-worm_lst = []
-for i in range(100):
-    worm = Worm()
-    worm_lst.append(worm)
-
-worm_frame = 0
-player_frame = 0
 
 
 while True:
@@ -111,14 +103,7 @@ while True:
     prev_player_x = player_x
     prev_player_y = player_y
 
-    # Encounter worm, press F to kill the worm
-    for worm in worm_lst:
-        if player.encounter_worm(worm):
-            if btn(KEY_F):
-                worm._life = False
-                worm_lst.remove(worm)
-            else:
-                player._health -= 1
+    player_frame = 0
 
     # player movement
     if btn(KEY_RIGHT):
@@ -177,8 +162,38 @@ while True:
             player_x = prev_player_x
             player_y = prev_player_y
             move = False
+        # Initialize worms
+        worm_lst = []
+        for i in range(100):
+            worm = Worm()
+            worm_lst.append(worm)
 
-    print(player._tools)
+        worm_frame = 0
+
+        # Encounter worm, press F to kill the worm
+        for worm in worm_lst:
+            if player.encounter_worm(worm):
+                if btn(KEY_F):
+                    worm._life = False
+                    worm_lst.remove(worm)
+                else:
+                    player._health -= 1
+
+        # Worm movement
+        for worm in worm_lst:
+            if not worm._chase and worm_frame%5 == 0:
+                worm.move()
+            else:
+                worm.chase(player)
+            if worm._life:
+                worm.draw()
+
+        worm.chase(player)
+        if worm._life:
+            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+
+        worm_frame += 1
+
     if knife in player._tools:
         print("done")
         if not attack:
@@ -195,16 +210,6 @@ while True:
             draw_sprite(player_x,player_y, 1)
 
     displayUI(tm.scroll_x, tm.scroll_y, 8, player._health, 5)
-
-
-    # Worm movement
-    for worm in worm_lst:
-        if not worm._chase and worm_frame%5 == 0:
-            worm.move()
-        else:
-            worm.chase(player)
-        if worm._life:
-            worm.draw()
             
     if safe_collision == True:
         if dialogue == 0:
@@ -240,11 +245,6 @@ while True:
     if print_str != "":
         render_text(print_str)           
 
-    worm.chase(player)
-    if worm._life:
-        blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
-
-    worm_frame += 1
     player_frame += 1
 
     flip()
