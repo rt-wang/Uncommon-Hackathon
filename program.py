@@ -114,7 +114,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
-    # (0, 128)
     for i in range(0, 3):
         blt((scroll_x+31)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, -8, 8, colkey=3)
         blt((scroll_x + 31 - len(player._tools) - 1)*size, (scroll_y+29+i)*size, 0, 0, 128 + 8*i, 8, 8, colkey=3)
@@ -173,6 +172,7 @@ while True:
 
                 worm_frame = 0
                 worm_lst = []
+                encountered_worm = []
                 a_worm = Worm()
                 worm_lst.append(a_worm)
                 tm.draw(0)
