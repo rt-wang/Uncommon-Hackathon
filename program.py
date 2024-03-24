@@ -39,10 +39,9 @@ def draw_sprite(player_x, player_y, frame):
         sprite(player_x+1, player_y+1, 5,3)
     elif frame == 5:
         if face_left:
-            sprite_2(player_x, player_y, 28, 48, flip = True)
-        else:
-            print(True)
             sprite_2(player_x, player_y, 28, 48, flip = False)
+        else:
+            sprite_2(player_x, player_y, 28, 48, flip = True)
 
 knife = Safe("knife", 25, 9, "ehewif") # 25 24 27 26 (top left, lower right)
 tank = Safe("tank", 25, 9, "awhef") # 25 4 27 5
@@ -129,6 +128,6 @@ while True:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
-    openSafe(safes, player_x, player_y)
+    #open_safe(safes, player_x, player_y)
     flip()
 
