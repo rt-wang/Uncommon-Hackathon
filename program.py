@@ -98,8 +98,16 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
     
 
 
-# Initialize worms
 
+# code for opening safe, only uncomment after object.py is done
+    length = 0
+    print_str = ""
+    dialogue = 0
+# Initialize worms    
+    worm_frame = 0
+    worm_lst = []
+    a_worm = Worm()
+    worm_lst.append(a_worm)
 
 player_frame = 0
 
@@ -116,8 +124,7 @@ while True:
     # check if player is alive
     if not player.is_alive():
         print("player is dead")
-        curMap = 2
-        tm.draw(curMap)
+        # PUT UP GAME OVER IMAGE/TILEMAP/Whatever
         while True:
             if btn(KEY_SPACE):
                 curMap = 0
@@ -136,10 +143,10 @@ while True:
                 safe2_visited = False
                 safe3_visited = False
 
-                # code for opening safe, only uncomment after object.py is done
                 length = 0
                 print_str = ""
                 dialogue = 0
+
                 worm_frame = 0
                 worm_lst = []
                 a_worm = Worm()
