@@ -51,7 +51,7 @@ while True:
             blt(worm._x, worm._y, 2, 0, 0, 8, 8)
 
     # Worm collide
-        
+    
 
 
     move = False
