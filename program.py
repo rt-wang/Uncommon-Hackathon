@@ -222,9 +222,10 @@ while True:
                 print_str = "Incorrect. One item has been lost. Permanently."
     else:
         print_str = ""
+        
     if print_str != "":
         render_text(print_str)           
-            
+
     worm.chase(player)
     if worm._life:
         blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
