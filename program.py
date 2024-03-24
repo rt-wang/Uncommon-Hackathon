@@ -174,7 +174,6 @@ while True:
     else:
         draw_sprite(player_x,player_y, 1)
 
-    display_safe(safes, player_x, player_y)
     if move:
         draw_sprite(player_x,player_y, 2)
     else:
@@ -187,7 +186,7 @@ while True:
         if not worm._chase:
             worm.move()
         else:
-            worm.chase()
+            worm.chase(player)
         if worm._life:
             worm.draw()
             draw_sprite(player_x,player_y, 1)
@@ -217,17 +216,12 @@ while True:
         if btnp(KEY_N):
             if dialogue == 6:
                 print_str = "Incorrect. One item has been lost. Permanently."
-            
-            
+              
     else:
         print_str = ""
 
     render_text(print_str)           
-            
-    worm.chase()
-    if worm._life:
-        blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
-        
+
     flip()
     
 # Plan for the safe
