@@ -265,7 +265,7 @@ while True:
 
         # Encounter worm, press A to kill the worm
         for worm in worm_lst:
-            if worm_frame % 20 == 0 and worm._life: # worm speed
+            if worm_frame % 7 == 0 and worm._life: # worm speed
                 if worm.close_to_player(player):
                     print("close")
                     worm.chase(player)
