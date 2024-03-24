@@ -71,15 +71,15 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 
     # health
     for i in range(0, health):
-        blt((scroll_x + 30-i)*size, (scroll_y + 1) *size, 0, 8, 32, 8, 8)
+        blt((scroll_x + 30-i)*size, (scroll_y + 1) *size, 0, 8, 32, 8, 8,colkey=3)
     
     #oxygen
     for i in range(0, oxygen):
-        blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8)
+        blt((scroll_x + 30-i)*size, (scroll_y + 2)*size, 0, 8, 40, 8, 8, colkey=3)
     
     # inventory
     for i in range(len(player._tools)):
-        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8)
+        blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
 
 
 
@@ -140,32 +140,43 @@ while True:
     #knife movement
     if btn(KEY_A):
         attack = True
-    for safe in safes:
-        if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
-            safe_collision = True
-            safe_num = safe_num - 1 # which safe it is
-        safe_num = safe_num + 1
-        if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
-            collision = True
-            
-    if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
-        collision = True
-    if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
-        if player_x >= 30 and player_y == 15:
-            collision = False
-        else:
-            collision = True
-    
-    if (player_x == 28 or player_x == 29) and (player_y == 13 or player_y == 14 or player_y == 16 or player_y == 17):
-        collision = True
 
-    if player_x == 31 and (player_y == 15 or player_y == 16):
-        door = True
+    # room collision
+    if not door:
+        for safe in safes:
+            if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
+                safe_collision = True
+                safe_num = safe_num - 1 # which safe it is
+            safe_num = safe_num + 1
+            if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
+                collision = True
+                
+        if (player_x == 4 or player_x == 5 or player_x == 6) and (player_y >= 4 and player_y <= 8):
+            collision = True
+        if player_x <= 0 or player_y <= 0 or player_x >= 30 or player_y >= 30: 
+            if player_x >= 30 and player_y == 15:
+                collision = False
+            else:
+                collision = True
+        
+        if (player_x == 28 or player_x == 29) and (player_y == 13 or player_y == 14 or player_y == 16 or player_y == 17):
+            collision = True
 
-    if collision == True:
-        player_x = prev_player_x
-        player_y = prev_player_y
-        move = False
+        if player_x == 31 and (player_y == 15 or player_y == 16):
+            door = True
+
+        if collision == True:
+            player_x = prev_player_x
+            player_y = prev_player_y
+            move = False
+    else:
+        if player_x < 0 or player_y < 0 or player_x >= 63 or player_y >= 63: 
+            collision = True
+
+        if collision:
+            player_x = prev_player_x
+            player_y = prev_player_y
+            move = False
 
     if "knife" in player.tool_names():
         if not attack:
