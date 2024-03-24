@@ -99,10 +99,7 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
 
 
 # Initialize worms
-worm_frame = 0
-worm_lst = []
-a_worm = Worm()
-worm_lst.append(a_worm)
+
 
 player_frame = 0
 
@@ -123,7 +120,32 @@ while True:
         tm.draw(curMap)
         while True:
             if btn(KEY_SPACE):
+                curMap = 0
+                timeOnMars = 0
+                timeOxygen = 0
 
+                player = Player(1,1)
+                player_x = player._x
+                player_y = player._y
+                scroll_x = 0
+                scroll_y = 0
+
+                face_left = False
+                door = False
+                safe1_visited = False
+                safe2_visited = False
+                safe3_visited = False
+
+                # code for opening safe, only uncomment after object.py is done
+                length = 0
+                print_str = ""
+                dialogue = 0
+                worm_frame = 0
+                worm_lst = []
+                a_worm = Worm()
+                worm_lst.append(a_worm)
+
+                break
 
 
     #pl = (player_x//8, player_y//8)
