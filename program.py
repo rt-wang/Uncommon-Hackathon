@@ -379,7 +379,7 @@ while True:
                     print_str= "Would you like to read? (Y/N)"
                     dialogue = 6
                 elif dialogue == 7:
-                    print_str = "It’s always hot and dusty. I miss home."
+                    print_str = "It's always hot and dusty. I miss home."
                     dialogue = 8
                 elif dialogue == 8:
                     print_str = "I miss Martha and Ben so much."
