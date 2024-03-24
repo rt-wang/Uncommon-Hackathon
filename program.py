@@ -279,8 +279,9 @@ while True:
             tm.scroll_x = 0
             tm.scroll_y = 0
         # fixHanger
+        
         # nail
-        if (player_x == 0 or player_x == 1) and (player_y == 14 or player_y == 15):    
+        if (player_x == 0 or player_x == 1) and (player_y == 13 or player_y == 14 or player_y == 15):    
             collision = True
             if hanger_visited == True:
                 fixHanger += 1
@@ -308,8 +309,9 @@ while True:
             hanger = True
         
         
-        if (player_x >= 20 and player_x <= 23) or (player_y >= 0 and player_y <= 3):
+        if (player_x >= 19 and player_x <= 24) or (player_y >= 0 and player_y <= 5):
             hanger_visited = True
+
             # if btnp(KEY_K):
             #     if dialogue == 0:
             #         render_text("It seems like there is a broken hanger")
