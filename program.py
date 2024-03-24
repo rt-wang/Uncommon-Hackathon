@@ -62,23 +62,13 @@ safe3 = Safe("rations, backpack", 28, 28, "rations")
 
 safes = [safe1, safe2, safe3]
 # code for opening safe, only uncomment after object.py is done
+length = 0
+print_str = ""
+dialogue = 0
 
-def display_safe(safes, player_x, player_y):        
-    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 150, 10, 0)
-    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Would you like to open the safe? Y/N", 7)
-    show_message = False
-    if btnp(KEY_Y):
-        show_message = True
-
-    if show_message == True:
-        rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 200, 10, 0)
-        text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, "Not so fast... (Press A)", 7)
-    #   if btnp(KEY_A):
-    #             safe.open_safe()
-    #         else:
-    #             text(10, 20, "Ok. Sad :'(.", 6)    
-    #     else:
-    #         text(10, 20, "Very sad :'(", 5)
+def render_text(str):
+    rect(19 + tm.scroll_x * 8, 18 + tm.scroll_y * 8, 237 + tm.scroll_x, 10, 0)
+    text(20 + tm.scroll_x * 8, 20 + tm.scroll_y * 8, str, 7)
 
 def displayUI(scroll_x, scroll_y, size, health, oxygen):
     # backdrop
@@ -114,6 +104,7 @@ while True:
     py = player_y
     collision = False
     safe_collision = False
+    safe_num = 0
     #pl = (player_x//8, player_y//8)
     cls(0)
     tm.draw(curMap)
@@ -152,6 +143,8 @@ while True:
     for safe in safes:
         if player_x <= safe._x + 2 and player_x >= safe._x - 2 and player_y <= safe._y + 2 and player_y >= safe._y - 2:
             safe_collision = True
+            safe_num = safe_num - 1 # which safe it is
+        safe_num = safe_num + 1
         if player_x <= safe._x + 1 and player_x >= safe._x - 1 and player_y <= safe._y + 1 and player_y >= safe._y - 1: # check for collision
             collision = True
             
@@ -194,9 +187,57 @@ while True:
         if not worm._chase:
             worm.move()
         else:
-            worm.chase(player)
-        if worm._life:
-            blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+            draw_sprite(player_x,player_y, 1)
+            
+    if safe_collision == True:
+        if dialogue == 0:
+            print_str = "Would you like to open the safe? Y/N"
+        if btnp(KEY_Y):
+            if dialogue <= 1:
+                print_str = "Not so quick. (Press K)"
+                dialogue = 1
+            if dialogue == 6:
+                print_str = "Correct. As Baby Ben is a baby, he does lie down."
+        if btnp(KEY_K):
+            if dialogue <= 2:
+                print_str = "A good astronaut remembers details..."
+                dialogue = 3
+            elif dialogue <= 3:
+                print_str = "Baby Ben lies."
+                dialogue = 4
+            elif dialogue <= 4:
+                print_str = "Baby Ben does not lie."
+                dialogue = 5
+            elif dialogue <= 5:
+                print_str = "Does Baby Ben lie? Y/N"
+                dialogue = 6
+        if btnp(KEY_N):
+            if dialogue == 6:
+                print_str = "Incorrect. One item has been lost. Permanently."
+            
+            
+    else:
+        print_str = ""
 
+    render_text(print_str)           
+            
+    worm.chase(player)
+    if worm._life:
+        blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
+        
     flip()
     
+# Plan for the safe
+'''
+1. collision
+2. do you want to open the safe (Y/N)
+3. if yes is picked, give a riddle (multiple choice)
+4. if correct answer picked, open safe, and items can be taken and added to inventory
+    5. for each item, player is asked do they want the item?
+    6. if they say yes, they are given options based on the item and their inventory
+        a. if they do not yet have a backpack, to take one item, you must get rid of another
+        b. for each item (post backpack), you can store item (if knife, rations, and key), use item, or leave item
+            c. for letter, using item means reading it
+            d. for rations, using item means eating it (so its gone)
+'''
+
