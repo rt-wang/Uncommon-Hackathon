@@ -48,6 +48,20 @@ class Tilemap:
 def sprite(x, y, n, m=0, size=8, colkey=0):
     blt(x * size, y * size, 0, n * size, m * size, size, size, colkey) # redraws sprite at new location
 
+
+def sprite(x, y, n, m, size=8, colkey=3, flip = False):
+    if not flip:
+        blt(x * size, y * size, 0, n * size, m * size, -size*2, size*2, colkey) # redraws sprite at new location
+    else:
+        blt(x * size, y * size, 0, n * size, m * size, size*2, size*2, colkey) # redraws sprite at new location
+
+def sprite_2(x, y, n, m, size = 8, colkey=3, flip = False):
+    if not flip:
+        blt(x * size, y * size, 0, n , m, 22, 16, colkey) # redraws sprite at new location
+    else:
+        blt(x * size, y * size, 0, n , m, -22, 16, colkey)
+
+
 def mouse_tile_pos(tile_size=8, screen_size=64):
     return floor(mouse_x * size / screen_size), floor(mouse_y * size / screen_size)
 
