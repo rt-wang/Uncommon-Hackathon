@@ -134,11 +134,7 @@ while True:
             draw_sprite(player_x,player_y, 2)
         else:
             draw_sprite(player_x,player_y, 1)
-<<<<<<< HEAD
-    #open_safe(safes, player_x, player_y)
-=======
     if safe_collision == True:
         display_safe(safes, player_x, player_y)
->>>>>>> 04934b53800e4211c3e222d5fd91329caf18e381
     flip()
     
