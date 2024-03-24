@@ -16,7 +16,6 @@ class Player:
         self._oxygen = oxygen
         self._food = food
         self._tools = []
-        
 
     # Update the player location by specifying the change of (x, y)
     def move_change_loc(self, x_change, y_change):

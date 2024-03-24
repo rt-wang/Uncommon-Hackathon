@@ -2,7 +2,7 @@ from pyxel import *
 from background import *
 from player import Player
 from object import Safe
-from object import Equipment
+from object import Equipment, FixHanger
 from background import Tilemap, sprite
 from object import Worm
 
@@ -24,6 +24,10 @@ timeOnMars = 0
 timeOxygen = 0
 bloodTimer = 0
 
+fixHanger = 0
+hanger = False
+hanger_visited = False
+
 player = Player(1,1)
 player_x = player._x
 player_y = player._y
@@ -35,6 +39,7 @@ encountered_worm = []
 face_left = False
 door = False
 
+ending = False
 def draw_sprite(player_x, player_y, frame):
     if frame == 1:
         sprite(player_x, player_y, 0,0, flip=face_left)
@@ -64,6 +69,11 @@ knife = Equipment("knife", 0, 0, 0, 88)
 key = Equipment("key", 0, 0, 8, 88)
 rations = Equipment("rations", 0, 0, 8, 80)
 tank = Equipment("tank", 0, 0, 0, 80)
+
+nail = Equipment("nail", 0, 14)
+oil = Equipment("oil", 40, 0)
+wood = Equipment("wood", 55, 0)
+
 
 #test
 # player._tools = [knife, key, rations, tank]
@@ -113,7 +123,6 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 29)*size, 0, 8, 128, 8, 8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
-    
 
 
 # Initialize worms
@@ -239,6 +248,94 @@ while True:
             player_y = prev_player_y
             move = False
     else: # in Mars
+        # fixHanger
+        # nail
+        if (player_x == 0 or player_x == 1) and (player_y == 14 or player_y == 15):    
+            collision = True
+            if hanger_visited == True:
+                fixHanger += 1
+                player._tools.append(nail)
+        # oil
+        if (player_x == 40 or player_x == 41 or player_x == 42) and (player_y == 0 or player_y == 1):    
+            if hanger_visited == True:
+                fixHanger += 1
+                collision = True
+                player._tools.append(oil)
+        #wood
+        if (player_x == 55 or player_x == 56) and (player_y == 0 or player_y == 1):    
+            if hanger_visited == True:
+                fixHanger += 1
+                collision = True
+                player._tools.append(wood)
+        
+        if fixHanger == 3:
+            hanger = True
+        
+        if (player_x >= 57 and player_x <= 59) and (player_y >= 6 and player_y <= 9):
+            # reached the statue
+            collision = True
+            ending = True
+        if ending == True:
+            if dialogue == 0:
+                print_str = "Would you like to open the safe? Y/N"
+            if btnp(KEY_Y):
+                if dialogue <= 1:
+                    print_str = "Another riddle awaits..."
+                    player._tools.append(key)
+                    dialogue = 2
+                elif dialogue == 6:
+                    print_str = "Dear ----,"
+                    dialogue = 7
+            if btnp(KEY_K):
+                if dialogue == 2:
+                    print_str = "There is a letter as well..."
+                    dialogue = 3
+                elif dialogue == 3:
+                    print_str = "Very clearly worn down from reading, "
+                    dialogue = 4
+                elif dialogue == 4:
+                    print_str = "many words are smudged beyond recognition."
+                    dialogue = 5
+                elif dialogue == 5:
+                    print_str= "Would you like to read? (Y/N)"
+                    dialogue = 6
+                elif dialogue == 7:
+                    print_str = "It’s always hot and dusty. I miss home."
+                    dialogue = 8
+                elif dialogue == 8:
+                    print_str = "I miss Martha and Ben so much."
+                    dialogue = 9
+                elif dialogue == 9:
+                    print_str = "It's a lonesome existence, being the -----."
+                    dialogue = 10
+                elif dialogue == 10:
+                    print_str = "I miss everyone. They are probably all -----."
+                    dialogue = 11
+                elif dialogue == 10:
+                    print_str = "I wonder, sometimes, if it's even ------"
+                    dialogue = 11   
+                elif dialogue == 11:
+                    print_str = "I hope you understand when -----"
+                    dialogue = 12
+                elif dialogue == 12:
+                    print_str = "Sincerely, -----"
+                    dialogue = 13
+                    safe2_visited = True
+        if print_str != "":
+            render_text(print_str) 
+        if (player_x >= 20 and player_x <= 23) or (player_y >= 0 and player_y <= 3):
+            hanger_visited = True
+            # if btnp(KEY_K):
+            #     if dialogue == 0:
+            #         render_text("It seems like there is a broken hanger")
+            #         dialogue = 1
+            #     if dialogue == 1:
+            #         render_text("Perhaps there are materials to fix it nearby")
+            #         dialogue = 0
+            # if hanger == True:
+            #     render_text("Do you want to fly away? (Y/N)")
+
+        # border
         if player_x < 0 or player_y < 0 or player_x >= 63 or player_y >= 63: 
             collision = True
 

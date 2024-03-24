@@ -89,9 +89,14 @@ class Safe:
         self._x = x
         self._y = y
         self._text = text        
-            
-            
-    def set_life(self, is_alive):
-        self._life = is_alive
 
-    
+class FixHanger:
+    def __init__(self, name, x, y) -> None:
+        self._name = name
+        self._x = x
+        self._y = y
+    def fixed(self, count) -> bool:
+        if count == 3:
+            return True
+        else:
+            return False
