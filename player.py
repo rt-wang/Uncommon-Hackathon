@@ -38,7 +38,7 @@ class Player:
             if each.name == "backpack":
                 self.tools.append(tool)
             else:
-                if tool.name == "knife":
+                if tool._name == "knife":
                     self._tools.append(tool)
 
     
@@ -52,7 +52,7 @@ class Player:
 
     # Return the list of tool names
     def tool_names(self) -> list:
-        lst = [tool.name for tool in self._tools]
+        lst = [tool._name for tool in self._tools]
         return lst
 
     # Encounter an object

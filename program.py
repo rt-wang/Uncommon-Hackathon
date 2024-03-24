@@ -174,7 +174,6 @@ while True:
     else:
         draw_sprite(player_x,player_y, 1)
 
-    display_safe(safes, player_x, player_y)
     if move:
         draw_sprite(player_x,player_y, 2)
     else:
@@ -190,41 +189,16 @@ while True:
             draw_sprite(player_x,player_y, 1)
             
     if safe_collision == True:
-        if dialogue == 0:
-            print_str = "Would you like to open the safe? Y/N"
-        if btnp(KEY_Y):
-            if dialogue <= 1:
-                print_str = "Not so quick. (Press K)"
-                dialogue = 1
-            if dialogue == 6:
-                print_str = "Correct. As Baby Ben is a baby, he does lie down."
-        if btnp(KEY_K):
-            if dialogue <= 2:
-                print_str = "A good astronaut remembers details..."
-                dialogue = 3
-            elif dialogue <= 3:
-                print_str = "Baby Ben lies."
-                dialogue = 4
-            elif dialogue <= 4:
-                print_str = "Baby Ben does not lie."
-                dialogue = 5
-            elif dialogue <= 5:
-                print_str = "Does Baby Ben lie? Y/N"
-                dialogue = 6
-        if btnp(KEY_N):
-            if dialogue == 6:
-                print_str = "Incorrect. One item has been lost. Permanently."
-            
-            
+        safes[safe_num].open_safe(dialogue)
     else:
         print_str = ""
 
     render_text(print_str)           
             
-    worm.chase()
+    worm.chase(player)
     if worm._life:
         blt(worm._x, worm._y, 2, 0, 8, 16, 8, 3)
-        
+
     flip()
     
 # Plan for the safe
