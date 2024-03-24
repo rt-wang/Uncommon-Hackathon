@@ -224,6 +224,14 @@ while True:
             player._health -= 1
 
     if knife in player._tools:
+        if move:
+                stepsOnMars += 1
+                if stepsOnMars >= 15:
+                    player._oxygen -= 1
+                    stepsOnMars = 0
+                if player._oxygen <= 0:
+                    player._health -= 1
+    if "knife" in player.tool_names():
         if not attack:
             if move and player_frame%5 < 3:
                 draw_sprite(player_x,player_y,4)
