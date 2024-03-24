@@ -96,9 +96,7 @@ def displayUI(scroll_x, scroll_y, size, health, oxygen):
         blt((scroll_x + 30-i)*size, (scroll_y + 31)*size, 0, 8, 128, 8, -8, colkey=3)
         blt((scroll_x + 30-i)*size, (scroll_y + 30)*size, 0, player._tools[i].u, player._tools[i].v, 8, 8, colkey=3)
     
-
-
-# Initialize worms
+# Initialize worms    
 worm_frame = 0
 worm_lst = []
 a_worm = Worm()
@@ -119,6 +117,36 @@ while True:
     # check if player is alive
     if not player.is_alive():
         print("player is dead")
+        # PUT UP GAME OVER IMAGE/TILEMAP/Whatever
+        while True:
+            if btn(KEY_SPACE):
+                curMap = 0
+                timeOnMars = 0
+                timeOxygen = 0
+
+                player = Player(1,1)
+                player_x = player._x
+                player_y = player._y
+                scroll_x = 0
+                scroll_y = 0
+
+                face_left = False
+                door = False
+                safe1_visited = False
+                safe2_visited = False
+                safe3_visited = False
+
+                length = 0
+                print_str = ""
+                dialogue = 0
+
+                worm_frame = 0
+                worm_lst = []
+                a_worm = Worm()
+                worm_lst.append(a_worm)
+
+                break
+
 
     #pl = (player_x//8, player_y//8)
     cls(0)
